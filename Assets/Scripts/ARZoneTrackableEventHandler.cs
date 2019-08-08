@@ -9,16 +9,16 @@ using Vuforia;
 
 public enum AnimationType {
     ModelAnimation,
-    VideoAnimation
+    VideoAnimation,
+    DirectorAnimation
 }
 
 public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
 {
 
     public AnimationType animationType;
-    public bool useDirector = false;
+    
     private PlayableDirector playableDirector;
-
     private VideoPlayer videoPlayer;
     private AudioSource audioSource;
     private Animator animator;
@@ -28,9 +28,6 @@ public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
         base.OnTrackingFound();
 
         // custom methods here....
-        if (playableDirector && useDirector) {
-            playableDirector.Play();
-        }
         
         if (animationType == AnimationType.ModelAnimation && !audioSource)
         {
@@ -38,9 +35,15 @@ public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
             return;
         }
 
-        if(animationType == AnimationType.VideoAnimation && ! videoPlayer)
+        if(animationType == AnimationType.VideoAnimation && !videoPlayer)
         {
             Debug.LogError("Please add Video Player component to target");
+            return;
+        }
+
+        if (animationType == AnimationType.DirectorAnimation && !playableDirector)
+        {
+            Debug.LogError("Please add Director component to target");
             return;
         }
 
@@ -52,6 +55,9 @@ public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
             case AnimationType.VideoAnimation:
                 videoPlayer.Play();
                 break;
+            case AnimationType.DirectorAnimation:
+                playableDirector.Play();
+                break;
             default:
                 break;
         }
@@ -61,10 +67,7 @@ public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
     {
         base.OnTrackingLost();
 
-        // custom methods here....
-        if (playableDirector) {
-            playableDirector.Stop();
-        }
+        // custom methods here...
 
         if (animationType == AnimationType.ModelAnimation && !audioSource)
         {
@@ -78,6 +81,12 @@ public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
             return;
         }
 
+        if (animationType == AnimationType.DirectorAnimation && !playableDirector)
+        {
+            Debug.LogError("Please add Director component to target");
+            return;
+        }
+
         switch (animationType)
         {
             case AnimationType.ModelAnimation:
@@ -86,6 +95,10 @@ public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
                 break;
             case AnimationType.VideoAnimation:
                 videoPlayer.Stop();
+                break;
+            case AnimationType.DirectorAnimation:
+                playableDirector.time = 0;
+                playableDirector.Stop();
                 break;
             default:
                 break;
@@ -97,13 +110,17 @@ public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
         base.Start();
 
         // custom methods here....
-        playableDirector = GetComponent<PlayableDirector>();
+        playableDirector = GetComponentInChildren<PlayableDirector>();
         videoPlayer = GetComponentInChildren<VideoPlayer>();
         audioSource = GetComponentInChildren<AudioSource>();
         animator = GetComponentInChildren<Animator>();
 
-        // make sure it's not playing on awake
+        // make sure it's not playing on awake except for playableDirector
         videoPlayer.playOnAwake = false;
         audioSource.playOnAwake = false;
+        if(playableDirector)
+        {
+            playableDirector.playOnAwake = true;
+        }
     }
 }
