@@ -26,3 +26,15 @@ MonoBehaviour:
     kategori: 1
     pointFromPlace: 100
     objectModelID: 1
+  - namaTempat: Wisma Mulia 2
+    lat: -6.234358
+    lon: 106.821991
+    kategori: 0
+    pointFromPlace: 100
+    objectModelID: 0
+  - namaTempat: Castle Production
+    lat: -6.162526
+    lon: 106.837748
+    kategori: 0
+    pointFromPlace: 100
+    objectModelID: 0
