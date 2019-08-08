@@ -1,0 +1,11 @@
+Font Loading 		:HelveticaObl-Th
+Font tombol 		:Good Times
+Font Take Camera 	:Gotham
+Font Menu 		:MUSICNET Regular
+
+Font about 		:MUSICNET Regular
+judul      		:Good Times
+Isi 			:Gotham
+
+Setting 		:MUSICNET Regular
+Setting teks 		:Myriad Pro

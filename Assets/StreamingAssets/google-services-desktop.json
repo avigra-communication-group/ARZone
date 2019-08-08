@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "337795579155",
+    "firebase_url": "https://ar-zone.firebaseio.com",
+    "project_id": "ar-zone",
+    "storage_bucket": "ar-zone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337795579155:android:a9f14a6eeddf31c4",
+        "android_client_info": {
+          "package_name": "com.castleproduction.arzone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337795579155-tebl6bfp87o2t0dltheiqin12hatgekj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.castleproduction.arzone",
+            "certificate_hash": "3e1373a03e7f67ae16b3b3d60195a93d8f78b443"
+          }
+        },
+        {
+          "client_id": "337795579155-5jfdev61pkk98v0i2q89fbaeh85lbav1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJjRC21xLgkq36JCTppgxdZPkpxiQIt7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337795579155-5jfdev61pkk98v0i2q89fbaeh85lbav1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
