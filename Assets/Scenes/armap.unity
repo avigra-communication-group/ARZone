@@ -264,10 +264,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   places: {fileID: 11400000, guid: d503cd215d6cb4d38a61259ed54e0a38, type: 2}
   goMap: {fileID: 1390352335}
-  statuePrefab: {fileID: 191634, guid: 45ab07dc58f034ade95a5bfaa0fca008, type: 3}
-  mallPrefab: {fileID: 191634, guid: 7d901a73a3d224caaa8a7670ebfc47cc, type: 3}
-  schoolPrefab: {fileID: 191634, guid: 7d901a73a3d224caaa8a7670ebfc47cc, type: 3}
-  hospitalPrefab: {fileID: 191634, guid: 7d901a73a3d224caaa8a7670ebfc47cc, type: 3}
+  objectDatabase:
+  - objectID: 0
+    iconObject: {fileID: 191634, guid: 45ab07dc58f034ade95a5bfaa0fca008, type: 3}
+  - objectID: 1
+    iconObject: {fileID: 191634, guid: 7d901a73a3d224caaa8a7670ebfc47cc, type: 3}
 --- !u!4 &79988382
 Transform:
   m_ObjectHideFlags: 0

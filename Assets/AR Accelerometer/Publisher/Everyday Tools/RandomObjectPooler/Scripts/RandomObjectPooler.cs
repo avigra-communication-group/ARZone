@@ -3,7 +3,7 @@
 Unity Assets by MAKAKA GAMES
 ============================
 
-Online Docs: https://makaka.org/category/docs/
+Online Docs: https://makaka.org/unity-assets
 Offline Docs: You have a PDF file in the package folder.
 
 =======
@@ -12,7 +12,7 @@ SUPPORT
 
 First of all, read the docs. If it didn’t help, get the support.
 
-Web: https://makaka.org/support/
+Web: https://makaka.org/support
 Email: info@makaka.org
 
 If you find a bug or you can’t use the asset as you need, 
@@ -24,18 +24,16 @@ I am here to help you and to improve my products for the best.
 
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
 using System.Collections.Generic;
 
-[HelpURL("https://makaka.org/category/docs")]
+[HelpURL("https://makaka.org/unity-assets")]
 [AddComponentMenu ("Makaka Games/Everyday Tools/Random Object Pooler")]
 public class RandomObjectPooler : MonoBehaviour
 {
-    [Range(0, 100)]
+    [Range(1, 30)]
     public int initPooledAmount = 7;
 	public Transform poolParent = null;
-
-    [Header("Logging")]
-    public bool isLogged = false;
 
     [Header("Single (actual for Testing target prefab; None => Multiple)")]
     public GameObject prefab;
@@ -45,80 +43,52 @@ public class RandomObjectPooler : MonoBehaviour
 	public GameObject[] prefabs;
 	
 	[Header("Events")]
-	public UnityEvent OnObjectsInstantiated;
-    public UnityEvent OnControlScriptsRegistered;
+	public UnityEvent OnInitialized;
 
 	[HideInInspector]
 	public List<GameObject> pooledObjects = null;
 
 	private GameObject currentInstantiated = null;
-
-    [HideInInspector]
-    public List<MonoBehaviour> controlScripts;
-	
-    private MonoBehaviour controlScriptTempForRegistration;
-    
-    private System.Type controlScriptType;
 	
 	void Start ()
     {
-        InstantiateAllObjects();
+        Init();
     }
 
-    private void InstantiateAllObjects()
+    private void Init()
     {
-        GameObject instantiateObjectTemp;
-
         pooledObjects = new List<GameObject>();
 
         for (int i = 0; i < initPooledAmount; i++)
         {
-            if (instantiateObjectTemp = InstantiateObject(i))
-            {
-                pooledObjects.Add(instantiateObjectTemp);
-            }
+            pooledObjects.Add(InstantiateObject(i));
         }
 
-        if (pooledObjects.Count == 0)
-        {
-            print("Object Pool is Empty.");
-        }
-
-        OnObjectsInstantiated.Invoke();
+        OnInitialized.Invoke();
     }
 
     private GameObject InstantiateObject(int index)
     {
         if (prefab)
         {
-            currentInstantiated = Instantiate(prefab);
+            currentInstantiated = (GameObject) Instantiate(prefab);
         }
-        else if (prefabs.Length > 0)
+        else if (areRandomizedObjects)
         {
-            if (areRandomizedObjects)
-            {
-                currentInstantiated =
-                    Instantiate(prefabs[Random.Range(0, prefabs.Length - 1)]);
-            }
-            else
-            {
-                currentInstantiated =
-                    Instantiate(prefabs[index % prefabs.Length]);
-            }
+            currentInstantiated = 
+                (GameObject) Instantiate(prefabs[Random.Range(0, prefabs.Length - 1)]);
         }
         else
         {
-            currentInstantiated = null;
+            currentInstantiated = 
+                (GameObject) Instantiate(prefabs[index % prefabs.Length]);
         }
 
-        if (currentInstantiated)
-        {
-            currentInstantiated.SetActive(false);
+        currentInstantiated.SetActive(false);
 
-            if (poolParent)
-            {
-                currentInstantiated.transform.parent = poolParent;
-            }
+        if (poolParent)
+        {
+            currentInstantiated.transform.parent = poolParent;
         }
 
 		return currentInstantiated;
@@ -130,10 +100,7 @@ public class RandomObjectPooler : MonoBehaviour
 		{
 			if(!pooledObjects[i])
             {
-                if (isLogged)
-                {
-                    print("GetPooledObject(): Create New Instance");
-                }
+                //print("GetPooledObject(): Create New Instance");
                 
                 pooledObjects[i] = InstantiateObject(i);
                 return pooledObjects[i];
@@ -145,66 +112,8 @@ public class RandomObjectPooler : MonoBehaviour
 			}    
 		}
 		
-        if (isLogged)
-        {
-            print("GetPooledObject(): All Game Objects in Pool are not available");
-        }
+		//print("GetPooledObject(): All Game Objects in Pool are not available");
 
 		return null;
 	}
-
-    public void InitControlScripts(System.Type type)
-    {
-        controlScripts = new List<MonoBehaviour>();
-
-        controlScriptType = type;
-    }
-
-    /// <summary>For initial registration (cashing) and subsequent getting Control Script of GameObject</summary>
-    public MonoBehaviour RegisterControlScript(GameObject gameObject)
-    {
-		controlScriptTempForRegistration = null;
-
-		// Search of cached Control Script
-		for (int i = 0; i < controlScripts.Count; i++)
-		{
-			controlScriptTempForRegistration = controlScripts[i];
-
-			if (controlScriptTempForRegistration)
-			{
-				if (controlScriptTempForRegistration.gameObject == gameObject)
-				{	
-					//print(i);
-					
-					break;
-				}
-				else
-				{
-					controlScriptTempForRegistration = null;
-				}
-			}
-			else // Game Object is null
-			{
-				controlScripts.RemoveAt(i);
-
-				//print("Remove null Control Script from List");
-			}
-		}
-
-		if (!controlScriptTempForRegistration)
-		{
-			controlScriptTempForRegistration = gameObject.GetComponent(controlScriptType) as MonoBehaviour; 
-
-            //print("Try to get Control Script");
-
-            if (controlScriptTempForRegistration)
-            {
-			    controlScripts.Add(controlScriptTempForRegistration);
-			    //print("Register New Control Script");
-            }
-
-		}
-
-		return controlScriptTempForRegistration;
-    }
 }

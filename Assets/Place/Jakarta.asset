@@ -19,10 +19,10 @@ MonoBehaviour:
     lon: 106.828823
     kategori: 0
     pointFromPlace: 50
-    prefab: {fileID: 191634, guid: 7d901a73a3d224caaa8a7670ebfc47cc, type: 3}
+    objectModelID: 0
   - namaTempat: Halte Busway Jati Padang
     lat: -6.285605
     lon: 106.826264
     kategori: 1
     pointFromPlace: 100
-    prefab: {fileID: 191634, guid: 45ab07dc58f034ade95a5bfaa0fca008, type: 3}
+    objectModelID: 1

@@ -21,7 +21,7 @@ MonoBehaviour:
   - heading: Online Docs
     text: You can also get the latest docs online.
     linkText: Open Online Docs
-    url: https://makaka.org/category/docs
+    url: https://makaka.org/unity-assets
   - heading: Support
     text: "First of all, read the docs. If it didn\u2019t help, get the support.\n\nIf
       you find a bug or you can\u2019t use the asset as you need, please first send
@@ -33,5 +33,5 @@ MonoBehaviour:
   - heading: Paid Assets for Free
     text: So wonderful day today! So you can really get a Bonus.
     linkText: Get Bonus
-    url: https://makaka.org/unity-assets
+    url: https://makaka.org/unity-assets-free
   loadedLayout: 1

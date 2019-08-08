@@ -18,6 +18,17 @@ public class IconObjectController : MonoBehaviour
 
     private void OnMouseDown() {
         AccelerometerCameraControl.SetTrackingWayWithPlayerPrefs(0);
-        SceneManager.LoadScene("Demo_ARCameraACCELEROMETER");
+
+        IconObjectControllerHelperUtils.operapblePlaceData = PlaceData;
+
+        if(!SystemInfo.supportsGyroscope)
+        {
+            SceneManager.LoadScene("Demo_ARCameraACCELEROMETER");
+        }
+        else if (SystemInfo.supportsGyroscope)
+        {
+            SceneManager.LoadScene("Demo_ARCameraGYRO");
+        }
+        
     }
 }

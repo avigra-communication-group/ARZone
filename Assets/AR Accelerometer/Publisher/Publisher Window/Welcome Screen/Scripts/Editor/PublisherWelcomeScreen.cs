@@ -3,7 +3,7 @@
 Unity Assets by MAKAKA GAMES
 ============================
 
-Online Docs: https://makaka.org/category/docs
+Online Docs: https://makaka.org/unity-assets
 Offline Docs: You have a PDF file in the package folder.
 
 =======
@@ -30,7 +30,7 @@ using UnityEngine;
 
 using Debug = UnityEngine.Debug;
 
-[HelpURL("https://makaka.org/category/docs")]
+[HelpURL("https://makaka.org/unity-assets")]
 [InitializeOnLoad]
 public class PublisherWelcomeScreen:EditorWindow
 {
@@ -80,13 +80,13 @@ public class PublisherWelcomeScreen:EditorWindow
 		scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
 		if (DrawButton(docsIcon, "Docs", "Online version of the documentation.")) 
-			Process.Start("https://makaka.org/category/docs");
+			Process.Start("https://makaka.org/unity-assets");
 
 		if (DrawButton(supportIcon, "Support", "First of all, read the docs. If it didn't help, email us.")) 
 			Process.Start("mailto:info@makaka.org?subject=Makaka Games - Asset Support");
 
 		if (DrawButton(allOurAssetsIcon, "Unity Assets", "Our AR assets. Create your own Pokemon GO.")) 
-			Process.Start("https://assetstore.unity.com/publishers/17426?aid=1100lGft&utm_source=aff");
+			Process.Start("https://makaka.org/o/all-unity-assets");
 
 		if (DrawButton(youTubeIcon, "YouTube Channel", "Our video materials.")) 
 			Process.Start("https://www.youtube.com/makakaorg");

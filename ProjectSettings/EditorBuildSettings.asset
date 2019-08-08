@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/AR Accelerometer/AR/AR Camera ACCELEROMETER/Scenes/Menu_ARCameraACCELEROMETER.unity
     guid: b01424531f9974e11a16085c4f038346
+  - enabled: 1
+    path: Assets/AR Accelerometer/AR/AR Camera GYRO/Scenes/Demo_ARCameraGYRO.unity
+    guid: 6dfbdd14c86c945718536f0217672a86
   m_configObjects: {}

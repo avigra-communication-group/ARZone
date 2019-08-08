@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 4f0bdd1a545262546a88cd46d13156f8
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: Car
     100002: Car3:Car1Body
@@ -619,22 +619,22 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: CatOrange
-    second: {fileID: 2100000, guid: 2c88fa6f5b49948d4b7f3b9d98d8bc52, type: 2}
+    second: {fileID: 2100000, guid: b4e37034a4ae64574aa1e0584ea25415, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Default_Material
-    second: {fileID: 2100000, guid: 270bcda5b7bcc498c94975ba221f1379, type: 2}
+    second: {fileID: 2100000, guid: bdf9f0f93baa04318b100aa878b66ab3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: DogRun_Final_Dog
-    second: {fileID: 2100000, guid: 2a1eeb7856c3c4c40b5a001820957f6d, type: 2}
+    second: {fileID: 2100000, guid: 21675148f2b524ce8ac7c0182d992900, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Rat_OnPlaceRun_Final1_Rat
-    second: {fileID: 2100000, guid: cbaadeb818438409a93e4566274f2a36, type: 2}
+    second: {fileID: 2100000, guid: a11b6226afa5940328c28e9b98d69ef3, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -951,6 +951,8 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0

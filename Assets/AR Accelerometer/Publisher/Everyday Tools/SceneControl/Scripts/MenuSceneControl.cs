@@ -3,7 +3,7 @@
 Unity Assets by MAKAKA GAMES
 ============================
 
-Online Docs: https://makaka.org/category/docs/
+Online Docs: https://makaka.org/unity-assets
 Offline Docs: You have a PDF file in the package folder.
 
 =======
@@ -12,7 +12,7 @@ SUPPORT
 
 First of all, read the docs. If it didn’t help, get the support.
 
-Web: https://makaka.org/support/
+Web: https://makaka.org/support
 Email: info@makaka.org
 
 If you find a bug or you can’t use the asset as you need, 
@@ -32,41 +32,23 @@ using UnityEditor;
 [HelpURL("https://makaka.org/category/docs")]
 [AddComponentMenu ("Makaka Games/Everyday Tools/Scene Control/Menu Scene Control")]
 public class MenuSceneControl : MonoBehaviour 
-{	
-	public static string menuSceneName = "Menu_ARSpaceShooter_Landscape";
-	public static string gameSceneName = "Game_ARSpaceShooter_Landscape";
-
-	public void LoadMenu()
-	{
-		LoadScene(menuSceneName);
-	}
-
-	public void LoadGame()
-	{
-		LoadScene(gameSceneName);
-	}
-
-	public void LoadScene(string sceneName)
-	{
-		LoadScreenControl.Instance.LoadScene(sceneName);
-	}
-
+{
 	public void LoadSceneWithScreenOrientationLandscapeLeft(string sceneName)
 	{
 		Screen.orientation = ScreenOrientation.LandscapeLeft;
 
-		LoadScene(sceneName);
+		LoadScreenControl.Instance.LoadScene(sceneName);
 	}
 
 	public void LoadSceneWithScreenOrientationPortrait(string sceneName)
 	{
 		Screen.orientation = ScreenOrientation.Portrait;
 
-		LoadScene(sceneName);
+		LoadScreenControl.Instance.LoadScene(sceneName);
 	}
 
 	public void ReloadCurrentScene()
 	{
-		LoadScene(SceneManager.GetActiveScene().name);
+		LoadScreenControl.Instance.LoadScene(SceneManager.GetActiveScene().name);
 	}
 }

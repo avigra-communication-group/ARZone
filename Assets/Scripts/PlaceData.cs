@@ -16,5 +16,5 @@ public class PlaceData
     [SerializeField]
     public double pointFromPlace = 0;
     [SerializeField]
-    public GameObject prefab;
+    public int objectModelID;
 }
