@@ -24,6 +24,9 @@ public class MobileRouter : MonoBehaviour
                 () => { ModalPanelManager.instance.ClosePanel(); }
             );
             return;
+        } else if (SceneManager.GetActiveScene().name == "Demo_ARCameraACCELEROMETER" || SceneManager.GetActiveScene().name == "Demo_ARCameraGYRO") {
+            SceneManager.LoadScene("armap");
+            return;
         }
         SceneManager.LoadScene("mainmenu");
     }

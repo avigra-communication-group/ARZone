@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using GoMap;
 using GoShared;
 
@@ -23,12 +24,11 @@ public class POIManager : MonoBehaviour
         goMap.locationManager.onOriginSet.AddListener((Coordinates) => { GeneratePlaces(Coordinates); });
     }
 
-    // private void Start() 
-    // {
-    //     if(places != null) {
-    //         GeneratePlaces();
-    //     }
-    // }
+    private void OnDisable() 
+    {
+        goMap.locationManager.onOriginSet.RemoveAllListeners();
+        BaseLocationManager.IsOriginSet = false;
+    }
 
     private void GeneratePlaces(Coordinates currentLocation) 
     {
