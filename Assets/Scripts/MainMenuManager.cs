@@ -59,10 +59,11 @@ public class MainMenuManager : MonoBehaviour
 
     private void Update()
     {
-        if(m_Point != FO.point) {
+        if(FO.currentUser  != null && m_Point != FO.currentUser.point) {
             //update the point
-            pointText.text = FO.point.ToString();
-            m_Point = FO.point;
+            pointText.text = FO.currentUser.point.ToString();
+            Debug.Log("point updaated.");
+            m_Point = FO.currentUser.point;
         }
     }
 
@@ -70,12 +71,14 @@ public class MainMenuManager : MonoBehaviour
     {
         ARPointManager.onRegisterDelegate += SetMyPointButtonInterractibility;
         ARPointManager.onPointValueChanged += UpdatePointText;
+        
     }
 
     private void OnDisable()
     {
         ARPointManager.onRegisterDelegate -= SetMyPointButtonInterractibility;
         ARPointManager.onPointValueChanged -= UpdatePointText;
+
     }
 
     private void Init() {
@@ -90,7 +93,6 @@ public class MainMenuManager : MonoBehaviour
         aboutButton.onClick.AddListener(AboutButton);
         settingButton.onClick.AddListener(SettingButton);
         myPointButton.onClick.AddListener(() => {
-            ARPointManager.GetPoint(null);
             StartCoroutine("PointRoutine");
         });
         quitButton.onClick.AddListener(QuitButton);
@@ -183,8 +185,31 @@ public class MainMenuManager : MonoBehaviour
     }
 
     IEnumerator PointRoutine() {
+        FO.fdb
+            .GetReference("users")
+            .Child(FO.userId)
+            .Child("point")
+            .GetValueAsync()
+            .ContinueWith(task => {
+                if(task.IsFaulted)
+                {
+
+                }
+                else if (task.IsCompleted)
+                {
+                    pointText.text = task.Result.Value.ToString();
+                }
+            });
         yield return new WaitForSeconds(2f);
         OpenPointPanel();
+    }
+
+    public void UpdatePointUI(object sender, ValueChangedEventArgs args)
+    {
+        string json = args.Snapshot.GetRawJsonValue();
+        User user = JsonUtility.FromJson<User>(json);
+
+        pointText.text = ""+user.point;
     }
 
     public void SetMyPointButtonInterractibility(bool state)
