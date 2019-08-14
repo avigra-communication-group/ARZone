@@ -20,6 +20,7 @@ public class ARPointManager : MonoBehaviour
 
     public static DataSnapshot userSnapshot;
     public User currentUser;
+    public List<string> locationVisited;
 
     // Methods start here ==================
     // ====================================
@@ -31,9 +32,13 @@ public class ARPointManager : MonoBehaviour
         {
             Debug.Log(PlayerPrefs.GetString(UserPrefType.PLAYER_ID));
         }
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            Debug.Log(FO.visitedPlace[0]);
+        }
     }
 
-    private void Start()
+    private void Awake()
     {
         #if UNITY_EDITOR
         PlayerPrefs.SetString(UserPrefType.PLAYER_ID, "eid");
@@ -44,6 +49,7 @@ public class ARPointManager : MonoBehaviour
         FO.app = FirebaseApp.DefaultInstance;
         FO.fdb = FirebaseDatabase.DefaultInstance;
         CheckUserAvalability();
+        GetVisitedMapFromDB();
     }
 
     private void CheckUserAvalability() 
@@ -74,6 +80,15 @@ public class ARPointManager : MonoBehaviour
                 {
                     // error handling here
                     Debug.Log("Data retriving process failed. Task terminated.");
+                    ModalPanelManager.instance.Choice(
+                        "Network error",
+                        "Maaf nampaknya ada kendala pada jaringan Anda. Cobalah beberapa saat lagi.",
+                        false,
+                        "",
+                        "",
+                        null,
+                        null
+                    );
                     return;
                 }
                 else if (task.IsCompleted)
@@ -208,6 +223,40 @@ public class ARPointManager : MonoBehaviour
         string json = JsonUtility.ToJson(currentUser);
 
         FirebaseDatabase.DefaultInstance.GetReference("users").Child(id).SetRawJsonValueAsync(json);
+    }
+
+    public void GetVisitedMapFromDB()
+    {
+        Debug.Log("Retrieving visited place database");
+        FO.fdb
+            .GetReference("users")
+            .Child(FO.userId)
+            .Child("visitedPlaces")
+            .GetValueAsync()
+            .ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    Debug.Log("Failed to retrieve visited places for user " + FO.userId + ". " + task.Exception);
+                }
+                else if (task.IsCompleted)
+                {
+                    Debug.Log("Successfully retrieved visited places data for user " + FO.userId);
+                    DataSnapshot snapshot = task.Result;
+                    //FO.visitedPlace.Clear();
+
+                    foreach (var child in snapshot.Children)
+                    {
+                        Debug.Log("adding " +child.Key+ " to locationVisited.");
+                        locationVisited.Add(child.Key);
+                    }
+
+                    FO.visitedPlace = new List<string>(locationVisited);
+
+                    Debug.Log("Location Gathered");
+
+                }
+            });
     }
 
 }

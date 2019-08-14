@@ -21,6 +21,7 @@ public class ARMapObjectController : MonoBehaviour
     private DatabaseReference visitedPlaceReference;
     private bool pointGathered = false;
     private bool pointUpdated = false;
+    private bool visitedPlaceUpdated = false;
 
     void Awake()
     {
@@ -69,10 +70,11 @@ public class ARMapObjectController : MonoBehaviour
     private void Update() 
     {
         // this is workaround because of firebase bug that doesnt work with monobehaviour nicely :(
-        if(pointUpdated)
+        if(pointUpdated && visitedPlaceUpdated)
         {
             RewardPanelManager.instance.OpenPanel();
             pointUpdated = false;
+            visitedPlaceUpdated = false;
         }
     }
 
@@ -119,28 +121,38 @@ public class ARMapObjectController : MonoBehaviour
 
     void AddThisPlaceToUserVisitedList()
     {
-        // PlaceName thisPlace = new PlaceName(placeData.namaTempat, true);
-
-        // visitedPlaces.placeNames.Add(thisPlace);
-
-        // visitedPlaceReference
-        //     .SetValueAsync(visitedPlaces)
-        //     .ContinueWith(task =>
-        //     {
-        //         if (task.IsFaulted)
-        //         {
-        //             Debug.Log("Visited places update failed. " + task.Exception);
-        //         }
-        //         else if (task.IsCompleted)
-        //         {
-        //             Debug.Log("Visited places updated to database successfully");
-        //             pointUpdated = true;
-        //         }
-        //     });
-
         visitedPlaceReference
             .Child(placeData.namaTempat)
-            .SetValueAsync(true);
+            .SetValueAsync(true)
+            .ContinueWith(task => {
+               if(task.IsFaulted)
+               {
+                   Debug.Log("Update visited place to database failed.");
+               } 
+               else if (task.IsCompleted)
+               {
+                   visitedPlaceReference
+                   .GetValueAsync()
+                   .ContinueWith(task2 => {
+                       if(task2.IsFaulted)
+                       {
+                           Debug.Log("failed retrieving visited place from database");
+                       }
+                       else if (task2.IsCompleted)
+                       {
+                           DataSnapshot snapshot = task2.Result;
+                           List<string> places = new List<string>();
+                           foreach(var place in snapshot.Children)
+                           {
+                               places.Add(place.Key);
+                           }
+                           FO.visitedPlace = new List<string>(places);
+                           visitedPlaceUpdated = true;
+                       }
+                   });
+               }
+            });
+
     }
 
     void OnMouseDown() {

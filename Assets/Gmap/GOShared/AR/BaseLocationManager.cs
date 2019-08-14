@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using LocationManagerEnums;
 using UnityEngine;
@@ -26,6 +27,9 @@ namespace GoShared
         [HideInInspector] public List<Coordinates> lastLocations = new List<Coordinates>();
         [HideInInspector] public MotionState currentMotionState = MotionState.Idle;
         [HideInInspector] float currentSpeed = 0;
+
+        // custom vars
+        private bool dataGathered;
 
 
         #region Origin
@@ -99,9 +103,6 @@ namespace GoShared
             }
 
         }
-
         #endregion
-
-
     }
 }

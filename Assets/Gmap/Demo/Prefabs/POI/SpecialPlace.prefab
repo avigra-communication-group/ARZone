@@ -290,7 +290,6 @@ GameObject:
   - component: {fileID: 465872}
   - component: {fileID: 6587926}
   - component: {fileID: 11436998}
-  - component: {fileID: 1578419913672568601}
   m_Layer: 0
   m_Name: SpecialPlace
   m_TagString: Untagged
@@ -342,15 +341,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 50
   continousRotation: 1
---- !u!114 &1578419913672568601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 191634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae5bf8d01a91846ba8e578a189116bb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

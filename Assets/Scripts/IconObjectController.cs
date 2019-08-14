@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using GoMap;
+using GoShared;
 
 public class IconObjectController : MonoBehaviour
 {
     private PlaceData placeData;
+    public bool canBeClicked = false;
 
     public PlaceData PlaceData
     {
@@ -16,7 +19,42 @@ public class IconObjectController : MonoBehaviour
         }
     }
 
+    private void Start() 
+    {
+        canBeClicked = !FO.visitedPlace.Contains(placeData.namaTempat);  
+    }
+
+    // private void OnEnable()
+    // {
+    //     canBeClicked = false;
+    //     POIManager.onLocationGathered += SetButtonClickedState;
+    //     //POIManager.OnLocationGathered.AddListener(this.SetButtonClickedState);
+    // }
+
+    // private void OnDisable()
+    // {
+    //     POIManager.onLocationGathered -= SetButtonClickedState;
+    //     //POIManager.OnLocationGathered.RemoveListener(this.SetButtonClickedState);
+    // }
+
+
     private void OnMouseDown() {
+
+        if(!canBeClicked)
+        {
+            Debug.Log("You can not get a point from place you have already visited.");
+            ModalPanelManager.instance.Choice(
+                "",
+                "Lokasi ini sudah Anda kunjungi sebelumnya. Kunjungi lokasi lainnya untuk mendapatkan point.",
+                false,
+                "",
+                "",
+                null,
+                null
+            );
+            return;
+        }
+
         AccelerometerCameraControl.SetTrackingWayWithPlayerPrefs(0);
 
         IconObjectControllerHelperUtils.operapblePlaceData = PlaceData;
