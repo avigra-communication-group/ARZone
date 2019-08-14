@@ -72,7 +72,7 @@ public class ARMapObjectController : MonoBehaviour
         // this is workaround because of firebase bug that doesnt work with monobehaviour nicely :(
         if(pointUpdated && visitedPlaceUpdated)
         {
-            RewardPanelManager.instance.OpenPanel();
+            RewardPanelManager.instance.OpenPanel(placeData.pointFromPlace);
             pointUpdated = false;
             visitedPlaceUpdated = false;
         }

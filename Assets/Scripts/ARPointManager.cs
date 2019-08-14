@@ -45,7 +45,6 @@ public class ARPointManager : MonoBehaviour
         #endif
         
         FO.userId = PlayerPrefs.GetString(UserPrefType.PLAYER_ID);
-        
         FO.app = FirebaseApp.DefaultInstance;
         FO.fdb = FirebaseDatabase.DefaultInstance;
         CheckUserAvalability();

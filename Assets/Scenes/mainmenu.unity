@@ -2336,7 +2336,7 @@ GameObject:
   - component: {fileID: 471859749}
   - component: {fileID: 471859750}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: Medium
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2405,10 +2405,21 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 845769954}
   toggleTransition: 1
   graphic: {fileID: 2056448995}
-  m_Group: {fileID: 0}
+  m_Group: {fileID: 1049531994}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1088633873}
+        m_MethodName: SetQualityLevel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
@@ -2548,10 +2559,10 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: -5473188441428621714, guid: ee1efd97d3faf4c0da4c49835afc02ae,
+  m_Sprite: {fileID: 4874858404039948825, guid: 49754048f6ec740e3a2d3016eb718df1,
     type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -3173,8 +3184,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 655.2057, y: -118.57893}
-  m_SizeDelta: {x: 1230.4114, y: 157.15787}
+  m_AnchoredPosition: {x: 655.2056, y: -149.90833}
+  m_SizeDelta: {x: 1230.4113, y: 219.81665}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &619085975
 MonoBehaviour:
@@ -3926,7 +3937,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1203970293}
   m_Direction: 0
   m_Value: 1
-  m_Size: 0.9999999
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3982,7 +3993,7 @@ GameObject:
   - component: {fileID: 708915589}
   - component: {fileID: 708915590}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: SoundSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4007,8 +4018,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 655.2057, y: -600.44336}
-  m_SizeDelta: {x: 1230.4114, y: 83.311714}
+  m_AnchoredPosition: {x: 655.2056, y: -811.1401}
+  m_SizeDelta: {x: 1230.4113, y: 140.23116}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &708915590
 MonoBehaviour:
@@ -4056,7 +4067,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.52
+  m_Value: 0.475
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4198,8 +4209,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 655.2057, y: -480.2085}
-  m_SizeDelta: {x: 1230.4114, y: 157.15787}
+  m_AnchoredPosition: {x: 655.2056, y: -631.11615}
+  m_SizeDelta: {x: 1230.4113, y: 219.81665}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &715909945
 MonoBehaviour:
@@ -4422,10 +4433,10 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: -5473188441428621714, guid: ee1efd97d3faf4c0da4c49835afc02ae,
+  m_Sprite: {fileID: 4874858404039948825, guid: 49754048f6ec740e3a2d3016eb718df1,
     type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -5425,7 +5436,7 @@ GameObject:
   - component: {fileID: 992189554}
   - component: {fileID: 992189555}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: Low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5494,13 +5505,24 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4194402}
   toggleTransition: 1
   graphic: {fileID: 1957410992}
-  m_Group: {fileID: 0}
+  m_Group: {fileID: 1049531994}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1088633873}
+        m_MethodName: SetQualityLevel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &1007452725
 GameObject:
   m_ObjectHideFlags: 0
@@ -5823,6 +5845,7 @@ GameObject:
   - component: {fileID: 1049531993}
   - component: {fileID: 1049531992}
   - component: {fileID: 1049531991}
+  - component: {fileID: 1049531994}
   m_Layer: 5
   m_Name: GraphicQualityPanel
   m_TagString: Untagged
@@ -5849,8 +5872,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 655.2057, y: -299.39374}
-  m_SizeDelta: {x: 1230.4114, y: 204.47171}
+  m_AnchoredPosition: {x: 655.2056, y: -390.51224}
+  m_SizeDelta: {x: 1230.4113, y: 261.39117}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1049531991
 MonoBehaviour:
@@ -5914,6 +5937,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1049531989}
   m_CullTransparentMesh: 0
+--- !u!114 &1049531994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049531989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 0
 --- !u!1 &1058909271
 GameObject:
   m_ObjectHideFlags: 0
@@ -5964,6 +6000,7 @@ GameObject:
   - component: {fileID: 1088633867}
   - component: {fileID: 1088633871}
   - component: {fileID: 1088633872}
+  - component: {fileID: 1088633873}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -6100,6 +6137,24 @@ MonoBehaviour:
   currentUser:
     point: 0
   locationVisited: []
+--- !u!114 &1088633873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088633866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77c0ea8c170f34c53ad142cae14a8218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleGroup: {fileID: 1049531994}
+  low: {fileID: 992189555}
+  medium: {fileID: 471859750}
+  high: {fileID: 1200192948}
+  soundVolume: {fileID: 708915590}
+  musicVolume: {fileID: 1638977970}
 --- !u!1 &1110164133
 GameObject:
   m_ObjectHideFlags: 0
@@ -6698,7 +6753,7 @@ GameObject:
   - component: {fileID: 1200192947}
   - component: {fileID: 1200192948}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: High
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6767,13 +6822,24 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 266517222}
   toggleTransition: 1
   graphic: {fileID: 1526391453}
-  m_Group: {fileID: 0}
+  m_Group: {fileID: 1049531994}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1088633873}
+        m_MethodName: SetQualityLevel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &1203970292
 GameObject:
   m_ObjectHideFlags: 0
@@ -6806,7 +6872,7 @@ RectTransform:
   m_Father: {fileID: 284112571}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.00000011920929, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -9041,10 +9107,10 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: -5473188441428621714, guid: ee1efd97d3faf4c0da4c49835afc02ae,
+  m_Sprite: {fileID: 4874858404039948825, guid: 49754048f6ec740e3a2d3016eb718df1,
     type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -9234,12 +9300,12 @@ GameObject:
   - component: {fileID: 1638977969}
   - component: {fileID: 1638977970}
   m_Layer: 5
-  m_Name: Slider (1)
+  m_Name: MusicSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1638977969
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9259,8 +9325,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 655.2057, y: -840.91296}
-  m_SizeDelta: {x: 1230.4114, y: 83.311714}
+  m_AnchoredPosition: {x: 655.2056, y: -841.14404}
+  m_SizeDelta: {x: 1230.4113, y: 80.22318}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1638977970
 MonoBehaviour:
@@ -10038,10 +10104,10 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: -5473188441428621714, guid: ee1efd97d3faf4c0da4c49835afc02ae,
+  m_Sprite: {fileID: 4874858404039948825, guid: 49754048f6ec740e3a2d3016eb718df1,
     type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -10125,8 +10191,8 @@ RectTransform:
   m_Father: {fileID: 1288351259}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.52, y: 0}
-  m_AnchorMax: {x: 0.52, y: 1}
+  m_AnchorMin: {x: 0.475, y: 0}
+  m_AnchorMax: {x: 0.475, y: 1}
   m_AnchoredPosition: {x: -28.400024, y: 0}
   m_SizeDelta: {x: 76.8, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10341,7 +10407,7 @@ RectTransform:
   m_Father: {fileID: 1058909272}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.3618157}
+  m_AnchorMin: {x: 0, y: 0.3623098}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -10541,7 +10607,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1903482990}
   m_Direction: 2
   m_Value: 1.0000002
-  m_Size: 0.6381843
+  m_Size: 0.6376902
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10959,7 +11025,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.52, y: 1}
+  m_AnchorMax: {x: 0.475, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11168,7 +11234,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2052405263
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11185,8 +11251,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 655.2057, y: -720.6781}
-  m_SizeDelta: {x: 1230.4114, y: 157.15787}
+  m_AnchoredPosition: {x: 655.2056, y: -721.1281}
+  m_SizeDelta: {x: 1230.4113, y: 159.80869}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2052405264
 MonoBehaviour:
@@ -12020,10 +12086,10 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: -5473188441428621714, guid: ee1efd97d3faf4c0da4c49835afc02ae,
+  m_Sprite: {fileID: 4874858404039948825, guid: 49754048f6ec740e3a2d3016eb718df1,
     type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1

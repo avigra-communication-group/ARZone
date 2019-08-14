@@ -19,8 +19,9 @@ public class RewardPanelManager : MonoBehaviour
         }    
     }
 
-    public void OpenPanel()
+    public void OpenPanel(double point)
     {
+        message.text = "You get <size=120>"+point+"</size>pt";
         container.SetActive(true);
     }
 
