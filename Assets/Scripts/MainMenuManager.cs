@@ -42,6 +42,9 @@ public class MainMenuManager : MonoBehaviour
     public Text pointText;
     public Text debugText;
 
+    public Transform galleryParent;
+    public RawImage[] galleryImages;
+
     private Canvas canvas;
     private double m_Point = -1;
 
@@ -85,10 +88,13 @@ public class MainMenuManager : MonoBehaviour
 
         // Component getters
         canvas = GetComponent<Canvas>();
-
+        galleryImages = galleryParent.GetComponentsInChildren<RawImage>();
         // Pasangkan listeners ke setiap event onClick button
         scanButton.onClick.AddListener(ScanButton);
-        galleryButton.onClick.AddListener(GalleryButton);
+        galleryButton.onClick.AddListener(() => {
+            StartCoroutine(LoadImagesIntoGallery());
+        });
+
         arMapButton.onClick.AddListener(ARMapButton);
         aboutButton.onClick.AddListener(AboutButton);
         settingButton.onClick.AddListener(SettingButton);
@@ -291,5 +297,29 @@ public class MainMenuManager : MonoBehaviour
             debugText.text = "";
             debugText.color = currentTextColor;
         });
+    }
+
+    public IEnumerator LoadImagesIntoGallery()
+    {
+        for (int i = 0; i < FO.galleryImages.Count; i++)
+        {
+            if(i > 9)
+            {
+                break;
+            }
+            using (WWW www = new WWW(FO.galleryImages[i]))
+            {
+                yield return www;
+                Material m = Instantiate(galleryImages[i].material);
+                Texture2D tex;
+                tex = new Texture2D(545, 462, TextureFormat.DXT1, false);
+                www.LoadImageIntoTexture(tex);
+                m.mainTexture = tex;
+                galleryImages[i].material = m;
+            }
+        }
+
+        GalleryButton();        
+        
     }
 }

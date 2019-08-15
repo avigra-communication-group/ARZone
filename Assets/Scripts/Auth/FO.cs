@@ -18,5 +18,6 @@ public static class FO
     public static string userId;
     public static User currentUser = null;
     public static List<string> visitedPlace;
+    public static List<string> galleryImages;
     public static bool userIsRegistered;
 }

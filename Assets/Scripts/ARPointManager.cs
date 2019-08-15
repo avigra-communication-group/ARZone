@@ -21,6 +21,7 @@ public class ARPointManager : MonoBehaviour
     public static DataSnapshot userSnapshot;
     public User currentUser;
     public List<string> locationVisited;
+    public List<string> galleryUrls;
 
     // Methods start here ==================
     // ====================================
@@ -49,6 +50,7 @@ public class ARPointManager : MonoBehaviour
         FO.fdb = FirebaseDatabase.DefaultInstance;
         CheckUserAvalability();
         GetVisitedMapFromDB();
+        GetGalleryImagesFromDB();
     }
 
     private void CheckUserAvalability() 
@@ -253,6 +255,39 @@ public class ARPointManager : MonoBehaviour
                     FO.visitedPlace = new List<string>(locationVisited);
 
                     Debug.Log("Location Gathered");
+
+                }
+            });
+    }
+
+    public void GetGalleryImagesFromDB()
+    {
+
+        Debug.Log("Retrieving gallery image urls database");
+        FO.fdb
+            .GetReference("gallery")
+            .GetValueAsync()
+            .ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    Debug.Log("Failed to retrieve visited places for user " + FO.userId + ". " + task.Exception);
+                }
+                else if (task.IsCompleted)
+                {
+                    Debug.Log("Successfully retrieved gallery urls data");
+                    DataSnapshot snapshot = task.Result;
+                    //FO.visitedPlace.Clear();
+
+                    foreach (var child in snapshot.Children)
+                    {
+                        Debug.Log("adding " + child.Value + " to gallery urls.");
+                        galleryUrls.Add(child.Value.ToString());
+                    }
+
+                    FO.galleryImages = new List<string>(galleryUrls);
+
+                    Debug.Log("gallery urls data gathered");
 
                 }
             });
