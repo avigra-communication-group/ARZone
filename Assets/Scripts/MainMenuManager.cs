@@ -43,7 +43,7 @@ public class MainMenuManager : MonoBehaviour
     public Text debugText;
 
     public Transform galleryParent;
-    public RawImage[] galleryImages;
+    public RawImage galleryImagePrefab;
 
     private Canvas canvas;
     private double m_Point = -1;
@@ -88,7 +88,7 @@ public class MainMenuManager : MonoBehaviour
 
         // Component getters
         canvas = GetComponent<Canvas>();
-        galleryImages = galleryParent.GetComponentsInChildren<RawImage>();
+        //galleryImages = galleryParent.GetComponentsInChildren<RawImage>();
         // Pasangkan listeners ke setiap event onClick button
         scanButton.onClick.AddListener(ScanButton);
         galleryButton.onClick.AddListener(() => {
@@ -301,25 +301,37 @@ public class MainMenuManager : MonoBehaviour
 
     public IEnumerator LoadImagesIntoGallery()
     {
+        // clean the gallery
+        foreach (Transform t in galleryParent)
+        {
+            Destroy(t.gameObject);
+        }
+
+        GalleryButton();
+
         for (int i = 0; i < FO.galleryImages.Count; i++)
         {
-            if(i > 9)
+            if (i > 9)
             {
                 break;
             }
             using (WWW www = new WWW(FO.galleryImages[i]))
             {
                 yield return www;
-                Material m = Instantiate(galleryImages[i].material);
+                RawImage r = Instantiate(galleryImagePrefab);
+                r.transform.SetParent(galleryParent, false);
+                r.transform.localScale = Vector3.one;
+                Material m = Instantiate(r.material);
                 Texture2D tex;
                 tex = new Texture2D(545, 462, TextureFormat.DXT1, false);
                 www.LoadImageIntoTexture(tex);
                 m.mainTexture = tex;
-                galleryImages[i].material = m;
+                r.material = m;
             }
         }
 
-        GalleryButton();        
+        ModalPanelManager.instance.ClosePanel();
+         
         
     }
 }
