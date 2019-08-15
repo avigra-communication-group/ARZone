@@ -21,19 +21,58 @@ public class OptionsController : MonoBehaviour
 
     private void Start() 
     {
+        Init();
+    }
+
+    public void Init()
+    {
+
         soundVolume.onValueChanged.AddListener(SetVolumeLevel);
+
+        if(!PlayerPrefs.HasKey(GameSettingPrefType.VOLUME))
+        {
+            PlayerPrefs.SetFloat(GameSettingPrefType.VOLUME, 0.75f);
+        }
+        else 
+        {
+            soundVolume.value = PlayerPrefs.GetFloat(GameSettingPrefType.VOLUME);
+            AudioListener.volume = soundVolume.value;
+        }
+
+        if (!PlayerPrefs.HasKey(GameSettingPrefType.GRAPHIC_QUALITY_LEVEL))
+        {
+            PlayerPrefs.SetInt(GameSettingPrefType.GRAPHIC_QUALITY_LEVEL, 2);
+        }
+        else
+        {
+            switch(PlayerPrefs.GetInt(GameSettingPrefType.GRAPHIC_QUALITY_LEVEL))
+            {
+                case 0:
+                    low.Select();
+                break;
+                case 2:
+                    medium.Select();
+                break;
+                case 4:
+                    high.Select();
+                break;
+                default:
+                    medium.Select();
+                break;
+            }
+        }
     }
 
     public void SetQualityLevel(int level)
     {
         QualitySettings.SetQualityLevel(level);
-        Debug.Log("Quality settings : " +QualitySettings.GetQualityLevel());
+        PlayerPrefs.SetInt(GameSettingPrefType.GRAPHIC_QUALITY_LEVEL, level);
     }
 
     public void SetVolumeLevel(float volume)
     {
         float choosenVolumeLevel = soundVolume.value;
         AudioListener.volume = choosenVolumeLevel;
-        Debug.Log(AudioListener.volume);
+        PlayerPrefs.SetFloat(GameSettingPrefType.VOLUME, volume);
     }
 }
