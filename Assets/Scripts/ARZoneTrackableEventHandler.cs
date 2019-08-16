@@ -15,20 +15,34 @@ public enum AnimationType {
 
 public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
 {
-
     public AnimationType animationType;
-    
+    [Header("Object yang dapat dipindahkan ke kamera.")]
+    public GameObject target;
+    private Transform targetParent;
+    private Vector3 originalPosition;
+    private Quaternion originalRotation;
+    private Vector3 originalScale;
+
     private PlayableDirector playableDirector;
     private VideoPlayer videoPlayer;
     private AudioSource audioSource;
     private Animator animator;
+    private bool objectIsPicked = false;
 
     protected override void OnTrackingFound()
     {
+        if(ARCameraTargetPicker.togglePick)
+        {
+            Debug.Log("Can not play until there is no object exists in camera.");
+            return;
+        }
         base.OnTrackingFound();
 
         // custom methods here....
-        
+
+        ARCameraTargetPicker.onPicked += SendObjectToCam;
+        ARCameraTargetPicker.onPickReleased += GetBackObjectFromCam;
+
         if (animationType == AnimationType.ModelAnimation && !audioSource)
         {
             Debug.LogError("Please add Audio Source component to target");
@@ -65,9 +79,13 @@ public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
 
     protected override void OnTrackingLost()
     {
+        if(objectIsPicked)
+        return;
+
         base.OnTrackingLost();
 
         // custom methods here...
+        
 
         if (animationType == AnimationType.ModelAnimation && !audioSource)
         {
@@ -97,8 +115,8 @@ public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
                 videoPlayer.Stop();
                 break;
             case AnimationType.DirectorAnimation:
-                playableDirector.time = 0;
                 playableDirector.Stop();
+                //playableDirector.time = 0;
                 break;
             default:
                 break;
@@ -115,12 +133,60 @@ public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
         audioSource = GetComponentInChildren<AudioSource>();
         animator = GetComponentInChildren<Animator>();
 
-        // make sure it's not playing on awake except for playableDirector
-        videoPlayer.playOnAwake = false;
-        audioSource.playOnAwake = false;
-        if(playableDirector)
+        // make sure it's not playing on awake
+        if(videoPlayer != null)
         {
-            playableDirector.playOnAwake = true;
+            videoPlayer.playOnAwake = false;
         }
+        if(audioSource != null)
+        {
+            audioSource.playOnAwake = false;
+        }
+        if(playableDirector != null)
+        {
+            playableDirector.playOnAwake = false;
+        }
+
+        targetParent = target.transform.parent;
+        originalPosition = target.transform.localPosition;
+        originalRotation = target.transform.localRotation;
+        originalScale = target.transform.localScale;
+    }
+
+    // custom method here...
+
+    private void OnEnable() {
+        
+    }
+
+    private void OnDisable() {
+        ARCameraTargetPicker.onPicked -= SendObjectToCam;
+        ARCameraTargetPicker.onPickReleased -= GetBackObjectFromCam;
+    }
+
+    public GameObject SendObjectToCam()
+    {
+        if(!target.activeInHierarchy)
+        {
+            return null;
+        }
+        objectIsPicked = true;
+        ARCameraTargetPicker.animationType = animationType;
+        return target;
+    }
+
+    public void GetBackObjectFromCam(GameObject go)
+    {
+        if(go != target)
+        {
+            return;
+        }
+        target = go;
+        target.transform.localPosition = originalPosition;
+        target.transform.localRotation = originalRotation;
+        target.transform.localScale = originalScale;
+        target.transform.SetParent(targetParent,false);
+        objectIsPicked = false;
+        OnTrackingLost();
     }
 }

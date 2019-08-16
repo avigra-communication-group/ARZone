@@ -40,6 +40,9 @@ public class ScanViewerMenuManager : MonoBehaviour
     }
 
     private void Init() {
+        // Important!       
+        ARCameraTargetPicker.togglePick = false;
+        
         screenshotPanelActive = screenshotPanel.activeInHierarchy;
         socialMediaButtonsPanel.DOMoveY(-Screen.width / 2, 0f, false);
 
