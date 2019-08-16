@@ -14,6 +14,8 @@ public class ScanViewerMenuManager : MonoBehaviour
 
     // UI elements.
     public Canvas canvas;
+    public Canvas watermarkCanvas;
+
     public GameObject screenshotPanel;
     public RectTransform socialMediaButtonsPanel;
 
@@ -79,6 +81,8 @@ public class ScanViewerMenuManager : MonoBehaviour
 
     private IEnumerator TakeScreenShotAndShare() {
         canvas.enabled = false;
+        watermarkCanvas.enabled = true;
+
         yield return new WaitForEndOfFrame();
 
         ss = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
@@ -86,6 +90,8 @@ public class ScanViewerMenuManager : MonoBehaviour
         ss.Apply();
         
         canvas.enabled = true;
+        watermarkCanvas.enabled = false;
+        
         yield return new WaitForEndOfFrame();
 
         // Open screenshot panel
