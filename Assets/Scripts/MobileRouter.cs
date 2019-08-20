@@ -21,7 +21,8 @@ public class MobileRouter : MonoBehaviour
                 "ya",
                 "tidak",
                 () => { Application.Quit(); },
-                () => { ModalPanelManager.instance.ClosePanel(); }
+                () => { ModalPanelManager.instance.ClosePanel(); },
+                false
             );
             return;
         } else if (SceneManager.GetActiveScene().name == "Demo_ARCameraACCELEROMETER" || SceneManager.GetActiveScene().name == "Demo_ARCameraGYRO") {

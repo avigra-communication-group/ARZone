@@ -147,7 +147,8 @@ public class ScanViewerMenuManager : MonoBehaviour
                 "",
                 "",
                 null,
-                null
+                null,
+                false
             );
             Debug.Log("target not exist");
         }
@@ -172,7 +173,8 @@ public class ScanViewerMenuManager : MonoBehaviour
             "",
             "",
             null,
-            null
+            null,
+            false
         );
 
     }

@@ -35,7 +35,11 @@ public class ARPointManager : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.U))
         {
-            Debug.Log(FO.visitedPlace[0]);
+            Debug.Log("point : " +FO.userPoint);
+            foreach(string p in FO.visitedPlace)
+            {
+                Debug.Log(p);
+            }
         }
     }
 
@@ -88,7 +92,8 @@ public class ARPointManager : MonoBehaviour
                         "",
                         "",
                         null,
-                        null
+                        null,
+                        false
                     );
                     return;
                 }
@@ -100,6 +105,7 @@ public class ARPointManager : MonoBehaviour
                     FO.userIsRegistered = userSnapshot.Exists;
                     if (FO.userIsRegistered)
                     {
+                        FO.userPoint =  Convert.ToDouble(userSnapshot.Child("point").Value);
                         if(onRegisterDelegate != null) onRegisterDelegate.Invoke(true);
 
                         Debug.Log("User registered.");
@@ -124,19 +130,21 @@ public class ARPointManager : MonoBehaviour
     {
         Debug.Log("Create a new user instance...");
 
-        // currentUser = new User();
-
-        // FO.currentUser = currentUser;
-
-        // string json = JsonUtility.ToJson(currentUser);
-
-        // FO.fdb.GetReference("users").Child(id).SetRawJsonValueAsync(json);
-
         FO.fdb
             .GetReference("users")
             .Child(id)
             .Child("point")
-            .SetValueAsync(0);
+            .SetValueAsync(0)
+            .ContinueWith(task => {
+                if(task.IsFaulted)
+                {
+                    //error handling
+                } 
+                else if(task.IsCompleted)
+                {
+                    FO.userPoint = 0;
+                }
+            });
 
         FO.fdb
             .GetReference("users")
@@ -167,9 +175,14 @@ public class ARPointManager : MonoBehaviour
             return;
         }
         DataSnapshot snapshot = args.Snapshot;
-        string json = snapshot.GetRawJsonValue();
-        currentUser = JsonUtility.FromJson<User>(json);
-        FO.currentUser = currentUser;
+        // string json = snapshot.GetRawJsonValue();
+        // currentUser = JsonUtility.FromJson<User>(json);
+        // FO.userPoint = currentUser.point;
+        
+        // update user point
+        FO.userPoint =  Convert.ToDouble(snapshot.Child("point").Value);
+        Debug.Log("Point updated to " +FO.userPoint);
+
     }
 
     public void GetUser(Action<User> userGathered) 
@@ -187,8 +200,7 @@ public class ARPointManager : MonoBehaviour
                 {
                     DataSnapshot userSnapshot = task.Result;
                     string json = userSnapshot.GetRawJsonValue();
-                    currentUser= JsonUtility.FromJson<User>(json);
-                    FO.currentUser = currentUser;
+                    //currentUser= JsonUtility.FromJson<User>(json);
                     if(userGathered != null) userGathered.Invoke(currentUser);
                 }
             });

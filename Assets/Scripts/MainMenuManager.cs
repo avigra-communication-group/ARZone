@@ -26,6 +26,7 @@ public class MainMenuManager : MonoBehaviour
     public GameObject myPointContainer;
     public GameObject aboutContainer;
     public GameObject settingContainer;
+    public GameObject exchangeContainer;
 
     public Button scanButton;
     public Button galleryButton;
@@ -62,11 +63,11 @@ public class MainMenuManager : MonoBehaviour
 
     private void Update()
     {
-        if(FO.currentUser  != null && m_Point != FO.currentUser.point) {
+        if(m_Point != FO.userPoint) {
             //update the point
-            pointText.text = FO.currentUser.point.ToString();
-            Debug.Log("point updaated.");
-            m_Point = FO.currentUser.point;
+            pointText.text = FO.userPoint.ToString();
+            Debug.Log("point updated.");
+            m_Point = FO.userPoint;
         }
     }
 
@@ -139,6 +140,7 @@ public class MainMenuManager : MonoBehaviour
         mainMenuButtonsContainer.SetActive(false);
         settingContainer.SetActive(false);
         aboutContainer.SetActive(false);
+        exchangeContainer.SetActive(false);
         galleryContainer.SetActive(true);
     }
 
@@ -203,7 +205,8 @@ public class MainMenuManager : MonoBehaviour
                 }
                 else if (task.IsCompleted)
                 {
-                    pointText.text = task.Result.Value.ToString();
+                    FO.userPoint = Convert.ToDouble(task.Result.Value);
+                    pointText.text = FO.userPoint.ToString();
                 }
             });
         yield return new WaitForSeconds(2f);
@@ -242,6 +245,7 @@ public class MainMenuManager : MonoBehaviour
         settingContainer.SetActive(false);
         aboutContainer.SetActive(false);
         galleryContainer.SetActive(false);
+        exchangeContainer.SetActive(false);
     }
 
     public void AboutButton() {
@@ -250,6 +254,7 @@ public class MainMenuManager : MonoBehaviour
         settingContainer.SetActive(false);
         myPointContainer.SetActive(false);
         aboutContainer.SetActive(true);
+        exchangeContainer.SetActive(false);
     }
 
     public void SettingButton() {
@@ -258,6 +263,7 @@ public class MainMenuManager : MonoBehaviour
         aboutContainer.SetActive(false);
         myPointContainer.SetActive(false);
         settingContainer.SetActive(true);
+        exchangeContainer.SetActive(false);
     }
 
     public void BackToMainMenuButtonContainer() {
@@ -266,6 +272,7 @@ public class MainMenuManager : MonoBehaviour
         settingContainer.SetActive(false);
         myPointContainer.SetActive(false);
         mainMenuButtonsContainer.SetActive(true);
+        exchangeContainer.SetActive(false);
     }
 
     public void QuitButton() {
@@ -276,7 +283,8 @@ public class MainMenuManager : MonoBehaviour
             "ya",
             "tidak",
             () => { Application.Quit(); },
-            () => { ModalPanelManager.instance.ClosePanel(); }
+            () => { ModalPanelManager.instance.ClosePanel(); },
+            false
         );
     }
 

@@ -16,8 +16,10 @@ public static class FO
 
     // for user
     public static string userId;
-    public static User currentUser = null;
+    public static double userPoint;
+    //public static User currentUser = null;
     public static List<string> visitedPlace;
     public static List<string> galleryImages;
     public static bool userIsRegistered;
+
 }

@@ -50,7 +50,8 @@ public class IconObjectController : MonoBehaviour
                 "",
                 "",
                 null,
-                null
+                null,
+                false
             );
             return;
         }
