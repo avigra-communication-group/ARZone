@@ -28,6 +28,7 @@ public class AuthUIManager : MonoBehaviour
     public Button signUpButton;
     public Button signOutButton;
     public Button verificationButton;
+    public Button resendVerificationButton;
     public Button logInButton;
 
     public Text debugText;

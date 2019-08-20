@@ -20,7 +20,7 @@ public class ModalPanelManager : MonoBehaviour
     public GameObject choiceButtonPanel;
     public Button yesButton;
     public Button noButton;
-    public EventTrigger backgroundClicked;
+    public EventTrigger backgroundTrigger;
 
     private void Awake() {
         if (instance == null) {
@@ -33,7 +33,7 @@ public class ModalPanelManager : MonoBehaviour
     }
 
     private void Init() {
-
+        backgroundTrigger = modalPanel.GetComponent<EventTrigger>();
     }
 
     public void Choice (string title, string text, bool showQuestionPanel, string yesText, string noText, UnityAction yesEvent, UnityAction noEvent, bool disableBackgroundExit) {
@@ -53,7 +53,7 @@ public class ModalPanelManager : MonoBehaviour
         {
             yesButton.gameObject.SetActive(true);
             noButton.gameObject.SetActive(true);
-            
+
             if(yesButtonText.text == "")
             {
                 yesButton.gameObject.SetActive(false);
@@ -64,14 +64,11 @@ public class ModalPanelManager : MonoBehaviour
             }
         }
 
-        if(disableBackgroundExit)
+        if(backgroundTrigger != null)
         {
-            EventTrigger trigger = modalPanel.GetComponent<EventTrigger>();
-            if(trigger != null)
-            {
-                trigger.enabled = false;
-            }
+            backgroundTrigger.enabled = !disableBackgroundExit;
         }
+
     }
 
     public void ShowPanel() {

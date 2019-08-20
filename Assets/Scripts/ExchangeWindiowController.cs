@@ -34,6 +34,7 @@ public class ExchangeWindiowController : MonoBehaviour
                 "Kembali ke menu Utama",
                 "",
                 () => {
+
                     ModalPanelManager.instance.ClosePanel();
                     MainMenuManager.instance.BackToMainMenuButtonContainer();
                 },
@@ -194,7 +195,6 @@ public class ExchangeWindiowController : MonoBehaviour
                     Debug.Log("Point updated to database successfully");
                     FO.userPoint = result;
                     transactionSucceeded = true;
-                    MainMenuManager.instance.BackToMainMenuButtonContainer();
                 }
             });
         

@@ -104,6 +104,11 @@ public  class AuthManager: MonoBehaviour
             ProceedToGame();
         });
     }
+
+    public void ResendVerificationCode()
+    {
+        // not implemented
+    }
     
     private void ProceedToGame() {
         SceneManager.LoadScene("mainmenu");

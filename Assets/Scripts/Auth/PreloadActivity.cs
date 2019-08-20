@@ -44,7 +44,7 @@ public class PreloadActivity : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        FO.phoneAuthProvider.VerifyPhoneNumber(phoneNumber, AUTH_TIMEOUT, null,
+        FO.phoneAuthProvider.VerifyPhoneNumber(phoneNumber, AUTH_TIMEOUT, FO.forceResendingToken,
         verificationCompleted: (credential) =>
         {
             // Auto-sms-retrieval or instant validation has succeeded (Android only).

@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/scanviewer.unity
     guid: a081b0eeb529e4e089ede0cd4e5ce6bb
   - enabled: 1
+    path: Assets/Scenes/scanviewerwithtimeline.unity
+    guid: e1da3d9d77280453aaf9b07d28d26ec5
+  - enabled: 1
     path: Assets/Scenes/armap.unity
     guid: 9593d10d1e22b40ff97f5078b25de26f
   - enabled: 1

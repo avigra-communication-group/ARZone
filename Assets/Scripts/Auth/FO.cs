@@ -9,6 +9,7 @@ public static class FO
     public static FirebaseAuth auth;
     public static FirebaseUser user;
     public static FirebaseApp app;
+    public static ForceResendingToken forceResendingToken;
     public static FirebaseDatabase fdb;
     public static PhoneAuthProvider phoneAuthProvider;
     public static Credential credential;

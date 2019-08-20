@@ -157,7 +157,8 @@ public class MainMenuManager : MonoBehaviour
                 () => { OpenGPSSettings(); },
                 () => {
                     ModalPanelManager.instance.ClosePanel();
-                }
+                },
+                false
             );
             return;
         }
