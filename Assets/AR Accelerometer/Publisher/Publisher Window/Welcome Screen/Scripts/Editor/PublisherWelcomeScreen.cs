@@ -61,8 +61,8 @@ public class PublisherWelcomeScreen:EditorWindow
 
 	static PublisherWelcomeScreen()
 	{
-		EditorApplication.update -= GetShowAtStart;
-		EditorApplication.update += GetShowAtStart;
+		// EditorApplication.update -= GetShowAtStart;
+		// EditorApplication.update += GetShowAtStart;
 	}
 
 	private void OnGUI()
