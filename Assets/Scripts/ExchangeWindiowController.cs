@@ -29,7 +29,7 @@ public class ExchangeWindiowController : MonoBehaviour
 
         ModalPanelManager.instance.Choice(
                 "Sukses",
-                "Transaksi berhasil. Point Anda kini tersisa " + FO.userPoint + " point.",
+                "Transaksi berhasil. Point Anda kini tersisa " + FO.userPoint + " point. Jangan lupa untuk mengambil reward Anda di Merchant.",
                 true,
                 "Kembali ke menu Utama",
                 "",
@@ -76,12 +76,12 @@ public class ExchangeWindiowController : MonoBehaviour
         {
             ModalPanelManager.instance.Choice(
                 "",
-                "Point Anda tidak mencukupi untuk mendapatkan reward ini.",
-                false,
-                "",
-                "",
-                null,
-                null,
+                "Point Anda tidak mencukupi untuk mendapatkan reward ini. Kumpulkan point dengan menemukan lokasi-lokasi tertentu di AR Map!. Pergi ke AR Map sekarang?",
+                true,
+                "Ya",
+                "Tidak",
+                () => { UnityEngine.SceneManagement.SceneManager.LoadScene("armap"); },
+                () => { ModalPanelManager.instance.ClosePanel(); },
                 false
             );
             return;

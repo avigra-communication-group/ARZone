@@ -19,6 +19,7 @@ public class FirebaseTester : MonoBehaviour
                 Debug.Log("User status is "+isRegistered);
             }));
         }
+
         if (Input.GetKeyDown(KeyCode.B))
         {
             Debug.Log("Check user point");
@@ -28,16 +29,7 @@ public class FirebaseTester : MonoBehaviour
             }));
             
         }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            Debug.Log("Check user visitedplaces");
-            StartCoroutine(FirebaseHelper.GetUserVisitedPlaces(FO.userId, (visitedPlaces) => {
-                foreach(var i in visitedPlaces)
-                {
-                    Debug.Log(i);
-                }
-            }));
-        }
+
         if (Input.GetKeyDown(KeyCode.M))
         {
             double add = 10;
@@ -49,8 +41,28 @@ public class FirebaseTester : MonoBehaviour
                     Debug.Log("User point is " + point);
                 }));
             }));
-            
-        }    
+        }
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            Debug.Log("Check user visitedplaces");
+
+            StartCoroutine(FirebaseHelper.GetUserVisitedPlaces(FO.userId, (visitedPlaces) =>
+            {
+                foreach (var i in visitedPlaces)
+                {
+                    Debug.Log(i);
+                }
+            }));
+        }
+
+        // if (Input.GetKeyDown(KeyCode.L))
+        // {
+        //     Debug.Log("Check user gallery");
+        //     StartCoroutine(FirebaseHelper.GetGalleryUrls((urls) => {
+        //         Debug.Log("urls gathered");
+        //     }));
+        // }
     }
     #endif
 }

@@ -17,8 +17,6 @@ public class MainMenuManager : MonoBehaviour
 
     public static MainMenuManager instance = null;
 
-    public ARPointManager aRPointManager;
-
     public GameObject mainMenuContainer;
 
     public GameObject mainMenuButtonsContainer;
@@ -55,6 +53,10 @@ public class MainMenuManager : MonoBehaviour
         } else if (instance != this) {
             Destroy(this.gameObject);
         }
+
+        FirebaseHelper.Init();
+        // Get the galleryUrls
+        FirebaseHelper.GetGalleryImagesFromDB();
     }
 
     private void Start() {
@@ -71,26 +73,13 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    private void OnEnable() 
-    {
-        ARPointManager.onRegisterDelegate += SetMyPointButtonInterractibility;
-        ARPointManager.onPointValueChanged += UpdatePointText;
-        
-    }
-
-    private void OnDisable()
-    {
-        ARPointManager.onRegisterDelegate -= SetMyPointButtonInterractibility;
-        ARPointManager.onPointValueChanged -= UpdatePointText;
-
-    }
-
     private void Init() {
 
         // Component getters
         canvas = GetComponent<Canvas>();
         //galleryImages = galleryParent.GetComponentsInChildren<RawImage>();
         // Pasangkan listeners ke setiap event onClick button
+
         scanButton.onClick.AddListener(ScanButton);
         galleryButton.onClick.AddListener(() => {
             StartCoroutine(LoadImagesIntoGallery());
@@ -99,11 +88,30 @@ public class MainMenuManager : MonoBehaviour
         arMapButton.onClick.AddListener(ARMapButton);
         aboutButton.onClick.AddListener(AboutButton);
         settingButton.onClick.AddListener(SettingButton);
-        myPointButton.onClick.AddListener(() => {
-            StartCoroutine("PointRoutine");
-        });
+        myPointButton.onClick.AddListener(PointRoutine);
         quitButton.onClick.AddListener(QuitButton);
-        
+
+        // Check if user registered
+        StartCoroutine(FirebaseHelper.CheckIfUserIsRegistered(FO.userId, (isRegistered) =>
+        {
+            if (isRegistered)
+            {
+                myPointButton.interactable = true;
+                // Register user Visited place
+                StartCoroutine(FirebaseHelper.GetUserVisitedPlaces(FO.userId, (vp) =>
+                {
+                    FO.visitedPlace = new List<string>(vp);
+                    arMapButton.interactable = true;
+                }));
+            }
+            else
+            {
+                FirebaseHelper.CreateNewUser(FO.userId, () => {
+                    Debug.Log("New user created");
+                });
+            }
+        }));
+
         // for Debug only!
         signOutButton.onClick.AddListener(() =>
         {
@@ -193,26 +201,16 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    IEnumerator PointRoutine() {
-
-        FO.fdb
-            .GetReference("users")
-            .Child(FO.userId)
-            .Child("point")
-            .GetValueAsync()
-            .ContinueWith(task => {
-                if(task.IsFaulted)
-                {
-
-                }
-                else if (task.IsCompleted)
-                {
-                    FO.userPoint = Convert.ToDouble(task.Result.Value);
-                    pointText.text = FO.userPoint.ToString();
-                }
-            });
-        yield return new WaitForSeconds(2f);
-        OpenPointPanel();
+    public void PointRoutine() {
+        StartCoroutine(FirebaseHelper.CheckIfUserIsRegistered(FO.userId, (isRegistered)=>{
+            if(isRegistered)
+            {
+                OpenPointPanel();
+                StartCoroutine(FirebaseHelper.GetUserPoint(FO.userId, (point) => {
+                    pointText.text = point.ToString();
+                }));
+            }
+        }));
     }
 
     public void UpdatePointUI(object sender, ValueChangedEventArgs args)
