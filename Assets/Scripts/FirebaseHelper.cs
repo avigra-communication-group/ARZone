@@ -20,7 +20,11 @@ public class FirebaseHelper : MonoBehaviour
     public static void Init() 
     {
 
+        #if UNITY_EDITOR
+        PlayerPrefs.SetString(UserPrefType.PLAYER_ID, "eid");
+        #endif
         FO.userId = PlayerPrefs.GetString(UserPrefType.PLAYER_ID);
+        
         FO.app = FirebaseApp.DefaultInstance;
         FO.app.SetEditorDatabaseUrl(FIREBASE_URL);
         FO.fdb = FirebaseDatabase.DefaultInstance;
