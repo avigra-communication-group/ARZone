@@ -194,6 +194,7 @@ public class MainMenuManager : MonoBehaviour
     }
 
     IEnumerator PointRoutine() {
+
         FO.fdb
             .GetReference("users")
             .Child(FO.userId)
@@ -339,8 +340,8 @@ public class MainMenuManager : MonoBehaviour
             }
         }
 
-        ModalPanelManager.instance.ClosePanel();
-         
-        
+        ModalPanelManager.instance.ClosePanel();   
     }
+
+    
 }

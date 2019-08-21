@@ -19,6 +19,7 @@ public class ARPointManager : MonoBehaviour
     private const string DB_BASEURL = "https://ar-zone.firebaseio.com/";
 
     public static DataSnapshot userSnapshot;
+
     public User currentUser;
     public List<string> locationVisited;
     public List<string> galleryUrls;
@@ -204,29 +205,6 @@ public class ARPointManager : MonoBehaviour
                     if(userGathered != null) userGathered.Invoke(currentUser);
                 }
             });
-        // FirebaseDatabase.DefaultInstance
-        //     .GetReference("users")
-        //     .Child(FO.userId)
-        //     .Child("point")
-        //     .GetValueAsync()
-        //     .ContinueWith(task =>
-        //     {
-        //         if (task.IsFaulted)
-        //         {
-        //             Debug.Log("Data retriving process failed. Task terminated.");
-        //             return;
-        //         }
-        //         else if (task.IsCompleted)
-        //         {
-        //             Debug.Log("Point retrieved with result "+task.Result);
-        //             DataSnapshot snapshot = task.Result;
-        //             FO.currentUser.point = Convert.ToDouble(snapshot.Value.ToString());
-        //             if(onPointValueChanged != null) onPointValueChanged.Invoke(FO.currentUser.point);
-        //             pointGathered(true);
-                    
-        //         }
-        //     }
-        // );
     }
 
     public void AddUserPoint(string id, double addedPoint)
@@ -300,9 +278,7 @@ public class ARPointManager : MonoBehaviour
                     FO.galleryImages = new List<string>(galleryUrls);
 
                     Debug.Log("gallery urls data gathered");
-
                 }
             });
     }
-
 }
