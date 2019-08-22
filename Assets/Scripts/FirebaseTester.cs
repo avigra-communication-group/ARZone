@@ -15,32 +15,23 @@ public class FirebaseTester : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.V))
         {
             Debug.Log("Check user registered");
-            StartCoroutine(FirebaseHelper.CheckIfUserIsRegistered(FO.userId, (isRegistered) => {
+            FirebaseHelper.CheckIfUserIsRegistered(FO.userId, (isRegistered) => {
                 Debug.Log("User status is "+isRegistered);
-            }));
+            });
         }
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            Debug.Log("Check user point");
-            StartCoroutine(FirebaseHelper.GetUserPoint(FO.userId, (point) =>
-            {
-                Debug.Log("User point is " + point);
-            }));
-            
+            FirebaseHelper.GetUserPoint(FO.userId, (p) => Debug.Log("Point is " +p));
         }
 
         if (Input.GetKeyDown(KeyCode.M))
         {
             double add = 10;
             Debug.Log("added user point by 10 ");
-            StartCoroutine(FirebaseHelper.AddUserPoint(FO.userId, add, () => {
-                Debug.Log("Point added.");
-                StartCoroutine(FirebaseHelper.GetUserPoint(FO.userId, (point) =>
-                {
-                    Debug.Log("User point is " + point);
-                }));
-            }));
+            FirebaseHelper.AddUserPoint(FO.userId, add, ()=> {
+                Debug.Log("Point added successfully from tester.");
+            });
         }
 
         if (Input.GetKeyDown(KeyCode.N))
@@ -55,14 +46,6 @@ public class FirebaseTester : MonoBehaviour
                 }
             }));
         }
-
-        // if (Input.GetKeyDown(KeyCode.L))
-        // {
-        //     Debug.Log("Check user gallery");
-        //     StartCoroutine(FirebaseHelper.GetGalleryUrls((urls) => {
-        //         Debug.Log("urls gathered");
-        //     }));
-        // }
+        #endif
     }
-    #endif
 }

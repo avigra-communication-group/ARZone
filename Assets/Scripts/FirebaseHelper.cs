@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
 using Firebase;
 using UnityEngine;
 using Firebase.Database;
+using Firebase.Extensions;
 using Firebase.Unity.Editor;
 
 public class FirebaseHelper : MonoBehaviour
@@ -36,131 +38,253 @@ public class FirebaseHelper : MonoBehaviour
         GalleryUrlsRef = FO.fdb.GetReference("gallery");
     }
 
-    public static IEnumerator CheckIfUserIsRegistered(string uid, Action<bool> isRegistered)
+    public static void CheckIfUserIsRegistered(string uid, Action<bool> isRegistered)
     {
-        elapsedTime = 0;
+        UserRef
+            .Child(FO.userId)
+            .GetValueAsync()
+            .ContinueWithOnMainThread(task => {
+                if(task.IsFaulted)
+                {
+                    // error handling here
+                }
+                else if (task.IsCompleted)
+                {
+                    DataSnapshot s = task.Result;
+                    if(!s.Exists)
+                    {
+                        Debug.Log("User is not registered.");
+                        isRegistered.Invoke(false);
+                    }
+                    else
+                    {
+                        Debug.Log("User is registered.");
+                        isRegistered.Invoke(true);
+                    }
+                }
+            });
 
-        if(FO.userId == "")
-        {
-            yield break;
-        }
 
-        var task = UserRef.Child(FO.userId).GetValueAsync();
-        yield return new WaitWhile(() => IsTask(task.IsCompleted));
+        // elapsedTime = 0;
 
-        if(task.IsFaulted || task.IsCanceled)
-        {
-            Debug.Log("Network error "+task.Exception);
-            yield break;
-        }
+        // if(FO.userId == "")
+        // {
+        //     yield break;
+        // }
 
-        var result = task.Result;
+        // var task = UserRef.Child(FO.userId).GetValueAsync();
+        // yield return new WaitWhile(() => IsTask(task.IsCompleted));
+
+        // if(task.IsFaulted || task.IsCanceled)
+        // {
+        //     Debug.Log("Network error "+task.Exception);
+        //     yield break;
+        // }
+
+        // var result = task.Result;
         
-        if(result == null || result.Value == null)
-        {
-           Debug.Log("User is not registered. Creating new User...");
-           isRegistered.Invoke(false);
-            yield  break;
-        }
-        else
-        {
-            Debug.Log("User is registered.");
-            isRegistered.Invoke(true);
-            yield return null;
-        }
+        // if(result == null || result.Value == null)
+        // {
+        //    Debug.Log("User is not registered. Creating new User...");
+        //    isRegistered.Invoke(false);
+        //     yield  break;
+        // }
+        // else
+        // {
+        //     Debug.Log("User is registered.");
+        //     isRegistered.Invoke(true);
+        //     yield return null;
+        // }
 
-        yield return null;
+        // yield return null;
     }
 
-    public static IEnumerator CreateNewUser(string uid, Action registrationSucceeded)
+    public static void CreateNewUser(string uid, Action registrationSucceeded)
     {
-        elapsedTime = 0;
+        UserRef
+            .Child(uid)
+            .Child("point")
+            .SetValueAsync(0)
+            .ContinueWithOnMainThread(task => {
+                if(task.IsFaulted)
+                {
+                    // error handling here
+                }
+                else if (task.IsCompleted)
+                {
+                    UserRef
+                        .Child(uid)
+                        .Child("visitedPlaces")
+                        .Child("t1")
+                        .SetValueAsync(0)
+                        .ContinueWithOnMainThread(task2 => {
+                            if(task2.IsFaulted)
+                            {
+                                // error handling here
+                            }
+                            else if(task2.IsCompleted)
+                            {
+                                Debug.Log("New user created.");
+                                registrationSucceeded.Invoke();
+                            }
+                        });
+                }
+            });
 
-        var task = UserRef.Child(uid).Child("point").SetValueAsync(0);
-        yield return new WaitUntil(() => IsTask(task.IsCompleted));
 
-        if(task.IsFaulted || task.IsCanceled)
-        {
-            Debug.Log("Creating new user failed or intterupted. Check your network connection." +task.Exception);
-            yield break;
-        }
+        // yield return new WaitUntil(() => IsTask(task.IsCompleted));
 
-        //If point successfully added, then add the visited place placeholder
-        elapsedTime = 0;
-        var nextTask = UserRef.Child(uid).Child("visitedPlaces").Child("t1").SetValueAsync(0);
-        yield return new WaitUntil(() => IsTask(nextTask.IsCompleted));
+        // if(task.IsFaulted || task.IsCanceled)
+        // {
+        //     Debug.Log("Creating new user failed or intterupted. Check your network connection." +task.Exception);
+        //     yield break;
+        // }
 
-        if (nextTask.IsFaulted || nextTask.IsCanceled)
-        {
-            Debug.Log("Creating new user failed or intterupted. Check your network connection." + nextTask.Exception);
-            yield break;
-        }
+        // //If point successfully added, then add the visited place placeholder
+        // elapsedTime = 0;
+        // var nextTask = UserRef.Child(uid).Child("visitedPlaces").Child("t1").SetValueAsync(0);
+        // yield return new WaitUntil(() => IsTask(nextTask.IsCompleted));
 
-        Debug.Log("New user created.");
-        registrationSucceeded.Invoke();
+        // if (nextTask.IsFaulted || nextTask.IsCanceled)
+        // {
+        //     Debug.Log("Creating new user failed or intterupted. Check your network connection." + nextTask.Exception);
+        //     yield break;
+        // }
 
-        yield return null;
+        // Debug.Log("New user created.");
+        // registrationSucceeded.Invoke();
+
+        // yield return null;
     }
 
-    public static IEnumerator GetUserPoint(string uid, Action<double> point)
+    public static void GetUserPoint(string uid, Action<double> point)
     {
-        Debug.Log("Coroutine Get User Point Called.");
-        elapsedTime = 0;
-        
-        var task = PointRef.GetValueAsync();
-        yield return new WaitUntil(() => IsTask(task.IsCompleted));
+        PointRef
+            .GetValueAsync()
+            .ContinueWithOnMainThread(task => {
+                if(task.IsFaulted)
+                {
+                    // error handling here
+                }
+                else if (task.IsCompleted)
+                {
+                    DataSnapshot s = task.Result;
+                    if(s.Exists)
+                    {
+                        double p = Convert.ToDouble(s.Value.ToString());
+                        point.Invoke(p);
+                    }
+                    else
+                    {
+                        Debug.Log("point is null");
+                    }
+                }
+            });
 
-        if (task.IsFaulted || task.IsCanceled)
-        {
-            Debug.Log("Network error " + task.Exception);
-            yield break;
-        }
 
-        var result = task.Result;
 
-        if (result == null || result.Value == null)
-        {
-            Debug.Log("Error : "+task.Exception);
-            yield break;
-        }
-        else
-        {
-            Debug.Log("Point gathered");
-            double p = Convert.ToDouble(result.Value.ToString());
-            FO.userPoint = p;
-            point.Invoke(p);
-            yield return null;
-        }
 
-        yield return null;
+        // if (task.IsFaulted || task.IsCanceled)
+        // {
+        //     Debug.Log("Network error " + task.Exception);
+        //     yield break;
+        // }
+
+        // var result = task.Result;
+
+        // if (result == null || result.Value == null)
+        // {
+        //     Debug.Log("Error : "+task.Exception);
+        //     yield break;
+        // }
+        // else
+        // {
+        //     Debug.Log("Point gathered");
+        //     double p = Convert.ToDouble(result.Value.ToString());
+        //     FO.userPoint = p;
+        //     point.Invoke(p);
+        //     yield return null;
+        // }
+
+        // yield return null;
+
+
+        // Debug.Log("Coroutine Get User Point Called.");
+        // elapsedTime = 0;
+
+        // var task = PointRef.GetValueAsync();
+        // yield return new WaitUntil(() => IsTask(task.IsCompleted));
+
+        // if (task.IsFaulted || task.IsCanceled)
+        // {
+        //     Debug.Log("Network error " + task.Exception);
+        //     yield break;
+        // }
+
+        // var result = task.Result;
+
+        // if (result == null || result.Value == null)
+        // {
+        //     Debug.Log("Error : "+task.Exception);
+        //     yield break;
+        // }
+        // else
+        // {
+        //     Debug.Log("Point gathered");
+        //     double p = Convert.ToDouble(result.Value.ToString());
+        //     FO.userPoint = p;
+        //     point.Invoke(p);
+        //     yield return null;
+        // }
+
+        // yield return null;
     }
 
-    public static IEnumerator AddUserPoint(string uid, double pointAdded, Action onSuccess)
+    public static void AddUserPoint(string uid, double pointAdded, Action onSuccess)
     {
-        elapsedTime = 0;
-        double currentPoint = 0;
-        
-        yield return FirebaseHelper.GetUserPoint(FO.userId, (point) => {
-            currentPoint = point;
+        FirebaseHelper.GetUserPoint(uid, (point) => {
+            double result = point + pointAdded;
+            PointRef
+                .SetValueAsync(result)
+                .ContinueWithOnMainThread(task => {
+                    if(task.IsFaulted)
+                    {
+                        // error handling here
+                    }
+                    else if (task.IsCompleted)
+                    {
+                        Debug.Log("point updated to "+result);
+                        onSuccess.Invoke();
+                    }
+                });
         });
+    //     elapsedTime = 0;
+    //     double currentPoint = 0;
+        
+    //     // yield return FirebaseHelper.GetUserPoint(FO.userId, (point) => {
+    //     //     currentPoint = point;
+    //     // });
 
-        double pointResult = currentPoint + pointAdded;
+    //     currentPoint = FO.userPoint;
 
-        var task = PointRef.SetValueAsync(pointResult);
-        yield return new WaitUntil(() => IsTask(task.IsCompleted));
+    //     double pointResult = currentPoint + pointAdded;
 
-        if (task.IsFaulted || task.IsCanceled)
-        {
-            Debug.Log("Error when updating point." + task.Exception);
-            yield break;
-        }
+    //     var task = PointRef.SetValueAsync(pointResult);
+    //     yield return new WaitUntil(() => IsTask(task.IsCompleted));
 
-        Debug.Log("Point successfully added");
-        onSuccess.Invoke();
+    //     if (task.IsFaulted || task.IsCanceled)
+    //     {
+    //         Debug.Log("Error when updating point." + task.Exception);
+    //         yield break;
+    //     }
 
-        yield return null;
+    //     Debug.Log("Point successfully added");
+    //     onSuccess.Invoke();
+
+    //     yield return null;
+    // }
     }
-
+    
     public static IEnumerator GetUserVisitedPlaces(string uid, Action<List<string>> visitedPlaces)
     {
         elapsedTime = 0;

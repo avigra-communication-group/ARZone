@@ -45,9 +45,9 @@ public class MainMenuManager : MonoBehaviour
     public RawImage galleryImagePrefab;
 
     private Canvas canvas;
-    private double m_Point = -1;
 
-    private void Awake() {
+    private void Awake() 
+    {
         if(instance == null) {
             instance = this;
         } else if (instance != this) {
@@ -63,18 +63,7 @@ public class MainMenuManager : MonoBehaviour
         Init();
     }
 
-    private void Update()
-    {
-        if(m_Point != FO.userPoint) {
-            //update the point
-            pointText.text = FO.userPoint.ToString();
-            Debug.Log("point updated.");
-            m_Point = FO.userPoint;
-        }
-    }
-
     private void Init() {
-
         // Component getters
         canvas = GetComponent<Canvas>();
         //galleryImages = galleryParent.GetComponentsInChildren<RawImage>();
@@ -92,17 +81,12 @@ public class MainMenuManager : MonoBehaviour
         quitButton.onClick.AddListener(QuitButton);
 
         // Check if user registered
-        StartCoroutine(FirebaseHelper.CheckIfUserIsRegistered(FO.userId, (isRegistered) =>
+        FirebaseHelper.CheckIfUserIsRegistered(FO.userId, (isRegistered) =>
         {
             if (isRegistered)
             {
                 myPointButton.interactable = true;
-                // Register user Visited place
-                StartCoroutine(FirebaseHelper.GetUserVisitedPlaces(FO.userId, (vp) =>
-                {
-                    FO.visitedPlace = new List<string>(vp);
-                    arMapButton.interactable = true;
-                }));
+                arMapButton.interactable = true;
             }
             else
             {
@@ -110,7 +94,7 @@ public class MainMenuManager : MonoBehaviour
                     Debug.Log("New user created");
                 });
             }
-        }));
+        });
 
         // for Debug only!
         signOutButton.onClick.AddListener(() =>
@@ -135,8 +119,6 @@ public class MainMenuManager : MonoBehaviour
                 SetMessage("Current user is "+FO.auth.CurrentUser);
             }
         });
-
-        
     }
 
     // Buttons function
@@ -201,16 +183,12 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    public void PointRoutine() {
-        StartCoroutine(FirebaseHelper.CheckIfUserIsRegistered(FO.userId, (isRegistered)=>{
-            if(isRegistered)
-            {
-                OpenPointPanel();
-                StartCoroutine(FirebaseHelper.GetUserPoint(FO.userId, (point) => {
-                    pointText.text = point.ToString();
-                }));
-            }
-        }));
+    public void PointRoutine() 
+    {
+        FirebaseHelper.GetUserPoint(FO.userId, (p) => {
+            pointText.text = p.ToString();
+            OpenPointPanel();
+        });
     }
 
     public void UpdatePointUI(object sender, ValueChangedEventArgs args)
@@ -231,12 +209,6 @@ public class MainMenuManager : MonoBehaviour
         pointText.text = value.ToString() ?? "...";
         Debug.Log("Updating point text with value = "+value);
         //Canvas.ForceUpdateCanvases();
-    }
-
-    public void MyPointButton() {
-        // connect to the firebase first
-        Debug.Log("Connecting to database...");
-        SetMessage("Connecting to database...");
     }
 
     private void OpenPointPanel() {
@@ -340,6 +312,4 @@ public class MainMenuManager : MonoBehaviour
 
         ModalPanelManager.instance.ClosePanel();   
     }
-
-    
 }
