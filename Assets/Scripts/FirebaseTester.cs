@@ -38,13 +38,13 @@ public class FirebaseTester : MonoBehaviour
         {
             Debug.Log("Check user visitedplaces");
 
-            StartCoroutine(FirebaseHelper.GetUserVisitedPlaces(FO.userId, (visitedPlaces) =>
+            FirebaseHelper.GetUserVisitedPlaces(FO.userId, (visitedPlaces) =>
             {
                 foreach (var i in visitedPlaces)
                 {
                     Debug.Log(i);
                 }
-            }));
+            });
         }
         #endif
     }

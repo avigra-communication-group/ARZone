@@ -83,15 +83,31 @@ public class MainMenuManager : MonoBehaviour
         // Check if user registered
         FirebaseHelper.CheckIfUserIsRegistered(FO.userId, (isRegistered) =>
         {
+            Debug.Log("Validating user registration.");
             if (isRegistered)
             {
+                Debug.Log("User registered.");
                 myPointButton.interactable = true;
-                arMapButton.interactable = true;
+                Debug.Log("Gathering user visited places.");
+                FirebaseHelper.GetUserVisitedPlaces(FO.userId, (visPlaces) => {
+                    FO.visitedPlace = new List<string>(visPlaces);
+                    arMapButton.interactable = true;
+                    Debug.Log("Visited places gathered.");
+                });
             }
             else
             {
+                Debug.Log("User not registered. Creating new user account...");
                 FirebaseHelper.CreateNewUser(FO.userId, () => {
                     Debug.Log("New user created");
+                    myPointButton.interactable = true;
+                    Debug.Log("Gathering user visited places.");
+                    FirebaseHelper.GetUserVisitedPlaces(FO.userId, (visPlaces) =>
+                    {
+                        FO.visitedPlace = new List<string>(visPlaces);
+                        arMapButton.interactable = true;
+                        Debug.Log("Visited places gathered.");
+                    });
                 });
             }
         });

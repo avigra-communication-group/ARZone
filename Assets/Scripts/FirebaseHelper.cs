@@ -285,39 +285,68 @@ public class FirebaseHelper : MonoBehaviour
     // }
     }
     
-    public static IEnumerator GetUserVisitedPlaces(string uid, Action<List<string>> visitedPlaces)
+    public static void GetUserVisitedPlaces(string uid, Action<List<string>> visitedPlaces)
     {
         elapsedTime = 0;
         List<string> vp = new List<string>();
 
-        var task = VisitedLocRef.GetValueAsync();
-        yield return new WaitUntil(() => IsTask(task.IsCompleted));
+        VisitedLocRef
+            .GetValueAsync()
+            .ContinueWithOnMainThread(task => {
+                if(task.IsFaulted)
+                {
+                    return;
+                }
+                if(task.IsCanceled)
+                {
+                    return;
+                }
 
-        if (task.IsFaulted || task.IsCanceled)
-        {
-            Debug.Log("Network error " + task.Exception);
-            yield break;
-        }
+                DataSnapshot s = task.Result;
 
-        var result = task.Result;
+                if(s == null)
+                {
+                    Debug.LogError("There is no visitedPlaces on user "+FO.userId);
+                    return;
+                }
+               
+                foreach(var i in s.Children)
+                {
+                    vp.Add(i.Key);
+                }
 
-        if (result == null || result.Value == null)
-        {
-            Debug.Log("No visited places yet");
-            yield break;
-        }
-        else
-        {
-            foreach(var p in result.Children)
-            {
-                vp.Add(p.Key);
-                yield return null;
-            }
-            Debug.Log("Visited place gathered.");
-            visitedPlaces.Invoke(new List<string>(vp));
-            yield return null;
-        }
-        yield return null;
+                visitedPlaces.Invoke(new List<string>(vp));
+
+            });
+
+        // var task = VisitedLocRef.GetValueAsync();
+        // yield return new WaitUntil(() => IsTask(task.IsCompleted));
+
+        // if (task.IsFaulted || task.IsCanceled)
+        // {
+        //     Debug.Log("Network error " + task.Exception);
+        //     yield break;
+        // }
+
+        // var result = task.Result;
+
+        // if (result == null || result.Value == null)
+        // {
+        //     Debug.Log("No visited places yet");
+        //     yield break;
+        // }
+        // else
+        // {
+        //     foreach(var p in result.Children)
+        //     {
+        //         vp.Add(p.Key);
+        //         yield return null;
+        //     }
+        //     Debug.Log("Visited place gathered.");
+        //     visitedPlaces.Invoke(new List<string>(vp));
+        //     yield return null;
+        // }
+        // yield return null;
     }
 
     public static IEnumerator GetGalleryUrls(Action<List<string>> galleryUrls)

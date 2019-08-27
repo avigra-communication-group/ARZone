@@ -14,96 +14,48 @@ public class ExchangeWindiowController : MonoBehaviour
 
     private DatabaseReference pointReference;
     private double pointToExchange;
-    private bool pointGathered = false;
-    private bool transactionSucceeded = false;
+    // private bool pointGathered = false;
+    // private bool transactionSucceeded = false;
 
     private void Start() 
     {
         tukarButton.onClick.AddListener(TukarReward);
     }
 
-    public void OnTransactionSucceedEvent()
-    {
-        pinInput.text = "";
-        tukarButton.interactable = false;
-
-        ModalPanelManager.instance.Choice(
-                "Sukses",
-                "Transaksi berhasil. Point Anda kini tersisa " + FO.userPoint + " point. Jangan lupa untuk mengambil reward Anda di Merchant.",
-                true,
-                "Kembali ke menu Utama",
-                "",
-                () => {
-
-                    ModalPanelManager.instance.ClosePanel();
-                    MainMenuManager.instance.BackToMainMenuButtonContainer();
-                },
-                ()=>{},
-                true
-            );
-    }
-
-    private void OnEnable() 
+    public void OpenExchangeWindow(double pointPrice, string reward)
     {
 
-        pointGathered = false;
-        transactionSucceeded = false;
-
-        // Get or update point from db
-        pointReference = FO.fdb.GetReference("users").Child(FO.userId).Child("point");
-        
-        pointReference
-            .GetValueAsync()
-            .ContinueWith(task =>
+        // Get or update point from db async
+        FirebaseHelper.GetUserPoint(FO.userId, (userPoint) =>
+        {
+            FO.userPoint = userPoint;
+            pointToExchange = pointPrice;
+            
+            if (FO.userPoint < pointPrice)
             {
-                if (task.IsFaulted)
-                {
-                    Debug.Log("Retrieving point from firebase failed " + task.Exception);
-                    pinInput.text = "";
-                }
-                else if (task.IsCompleted)
-                {
-                    Debug.Log("Data berhasil diambil. Mengolah data...");
-                    FO.userPoint = Convert.ToDouble(task.Result.Value.ToString());
-                    pointGathered = true;
-                }
-            });
-    }
-
-    public void OpenExchangeWindow(double point, string reward)
-    {
-        if(FO.userPoint < point)
-        {
-            ModalPanelManager.instance.Choice(
-                "",
-                "Point Anda tidak mencukupi untuk mendapatkan reward ini. Kumpulkan point dengan menemukan lokasi-lokasi tertentu di AR Map!. Pergi ke AR Map sekarang?",
-                true,
-                "Ya",
-                "Tidak",
-                () => { UnityEngine.SceneManagement.SceneManager.LoadScene("armap"); },
-                () => { ModalPanelManager.instance.ClosePanel(); },
-                false
+                ModalPanelManager.instance.Choice(
+                    "",
+                    "Point Anda tidak mencukupi untuk mendapatkan reward ini. Kumpulkan point dengan menemukan lokasi-lokasi tertentu di AR Map!. Pergi ke AR Map sekarang?",
+                    true,
+                    "Ya",
+                    "Tidak",
+                    () => { UnityEngine.SceneManagement.SceneManager.LoadScene("armap"); },
+                    () => { ModalPanelManager.instance.ClosePanel(); },
+                    false
+                );
+                return;
+            }
+            gameObject.SetActive(true);
+            tukarButton.interactable = true;
+            messageDisplay.text =
+            string.Format(
+                "Anda dapat menukarkan {0} point milik Anda untuk mendapatkan reward {1}. \nTunjukan layar ini ke merchant untuk mendapatkan reward!",
+                FO.userPoint,
+                reward
             );
-            return;
-        }
-        gameObject.SetActive(true);
-        tukarButton.interactable = false;
-        messageDisplay.text = 
-        string.Format(
-            "Anda dapat menukarkan {0} point milik Anda untuk mendapatkan reward {1}. \nTunjukan layar ini ke merchant untuk mendapatkan reward!"
-            ,point, reward
-        );
-        pointToExchange = point;
-    }
+        });
 
-    private void Update() 
-    {
-        tukarButton.interactable = pointGathered;
-        if(transactionSucceeded)
-        {
-            OnTransactionSucceedEvent();
-            transactionSucceeded = false;
-        }
+        
     }
 
     public void CloseExchangeWindow()
@@ -182,21 +134,31 @@ public class ExchangeWindiowController : MonoBehaviour
 
         Debug.Log("Melakukan update point kedalam database.");
 
-        pointReference
-            .SetValueAsync(result)
-            .ContinueWith(task =>
-            {
-                if (task.IsFaulted)
+        FirebaseHelper.AddUserPoint(FO.userId, -pointToExchange, () => {
+            FO.userPoint = result;
+            Debug.Log("Transaksi berhasil.");
+            OnTransactionSucceedEvent();
+        });
+    }
+
+    public void OnTransactionSucceedEvent()
+    {
+        pinInput.text = "";
+        tukarButton.interactable = false;
+
+        ModalPanelManager.instance.Choice(
+                "Sukses",
+                "Transaksi berhasil. Point Anda kini tersisa " + FO.userPoint + " point. Jangan lupa untuk mengambil reward Anda di Merchant.",
+                true,
+                "Kembali ke menu Utama",
+                "",
+                () =>
                 {
-                    Debug.Log("Point update failed. " + task.Exception);
-                }
-                else if (task.IsCompleted)
-                {
-                    Debug.Log("Point updated to database successfully");
-                    FO.userPoint = result;
-                    transactionSucceeded = true;
-                }
-            });
-        
+                    ModalPanelManager.instance.ClosePanel();
+                    MainMenuManager.instance.BackToMainMenuButtonContainer();
+                },
+                () => { },
+                true
+            );
     }
 }
