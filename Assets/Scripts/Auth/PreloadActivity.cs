@@ -4,16 +4,17 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Firebase.Auth;
+using Firebase.Extensions;
 using UnityEngine.UI;
 
 public class PreloadActivity : MonoBehaviour
 {
 
     public Text messageText;
-    private const uint AUTH_TIMEOUT = 30;
+    private const uint AUTH_TIMEOUT = 12 * 1000;
 
     private void Start() {
-        StartCoroutine(InitFirebase());
+        InitFirebase();
     }
 
     private void GoToScene(string sceneName) {
@@ -21,18 +22,21 @@ public class PreloadActivity : MonoBehaviour
     }
 
     // Init firebase
-    IEnumerator InitFirebase()
+    private void  InitFirebase()
     {
         messageText.text = "";
-        messageText.text = "Initializing authentication server... .";
+        messageText.text = "Memulai proses authentikasi... .";
 
         FO.auth = FirebaseAuth.DefaultInstance;
-        FO.auth.StateChanged +=  ARAuthManager.AuthStateChanged;
-        ARAuthManager.AuthStateChanged(this, null);
-
-        yield return new WaitForSeconds(2f);
+        FO.auth.StateChanged +=  AuthStateChanged;
+        AuthStateChanged(this, null);
 
         StartCoroutine(SignInPlayer());
+    }
+
+    private void OnDestroy() 
+    {
+        FO.auth.StateChanged -= ARAuthManager.AuthStateChanged;
     }
 
     // Sign in Player
@@ -51,8 +55,28 @@ public class PreloadActivity : MonoBehaviour
             // There is no need to input the verification code.
             // `credential` can be used instead of calling GetCredential().
             FO.credential = credential;
-            messageText.text = "Verifikasi berhasil.";
-            GoToScene("mainmenu");
+            FO.auth
+                .SignInWithCredentialAsync(FO.credential)
+                .ContinueWithOnMainThread(task => {
+                    if(task.IsCanceled)
+                    {
+                        Debug.Log("Proses pendaftaran dibatalkan.");
+                        messageText.text = "Proses pendaftaran dibatalkan.";
+                        return;
+                    }
+                    if(task.IsFaulted)
+                    {
+                        Debug.Log("Proses pendaftaran belum berhasil. " + task.Exception);
+                        messageText.text = "Proses pendaftaran belum berhasil.";
+                    }
+                    if(task.IsCompleted)
+                    {
+                        Debug.Log("Pendaftaran berhasil.");
+                        FO.user = task.Result;
+                        messageText.text = "Pendaftaran berhasil.";
+                        GoToScene("mainmenu");
+                    }
+                });
         },
         verificationFailed: (error) =>
         {
@@ -75,8 +99,34 @@ public class PreloadActivity : MonoBehaviour
             // Called when the auto-sms-retrieval has timed out, based on the given
             // timeout parameter.
             // `id` contains the verification id of the request that timed out.
-            messageText.text  = "Menunggu verifikasi.";
+            messageText.text  = "Verifikasi otomatis belum berhasil. Melakukan proses pendaftaran manual.";
             GoToScene("auth");
         });
+    }
+
+    public void AuthStateChanged(object sender, System.EventArgs eventArgs)
+    {
+        if (FO.auth.CurrentUser != FO.user)
+        {
+            FO.isSignedIn = FO.user != FO.auth.CurrentUser && FO.auth.CurrentUser != null;
+
+            if (!FO.isSignedIn && FO.user != null)
+            {
+                Debug.Log("Signed out " + FO.user.UserId);
+                // if signed out tell user to login or sign-in
+                // AuthUIManager.instance.authContainer.SetActive(true);
+                // AuthUIManager.instance.DisplayPanel(AuthPanelType.SignUp, true);
+                // GoToScene("auth");
+                // SceneManager.LoadScene("auth");
+            }
+
+            FO.user = FO.auth.CurrentUser;
+
+            if (FO.isSignedIn)
+            {
+                // GoToScene("mainmenu");
+                GoToScene("mainmenu");
+            }
+        }
     }
 }

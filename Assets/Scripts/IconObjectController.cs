@@ -38,7 +38,7 @@ public class IconObjectController : MonoBehaviour
     // }
 
 
-    private void OnMouseDown() {
+    public void OnClicked() {
 
         if(!canBeClicked)
         {

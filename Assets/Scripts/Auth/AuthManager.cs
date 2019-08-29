@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Firebase;
+using Firebase.Extensions;
 using Firebase.Auth;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +10,7 @@ using UnityEngine.SceneManagement;
 public  class AuthManager: MonoBehaviour
 {
 
-    private const uint AUTH_TIMEOUT = 30;
+    private const uint AUTH_TIMEOUT = 12 * 1000;
 
     void Start() 
     {
@@ -26,9 +27,14 @@ public  class AuthManager: MonoBehaviour
     private void InitFirebase() {
         if(FO.auth == null) {
             FO.auth = FirebaseAuth.DefaultInstance;
-            FO.auth.StateChanged += ARAuthManager.AuthStateChanged;
-            ARAuthManager.AuthStateChanged(this, null);
+            FO.auth.StateChanged += AuthStateChanged;
+            AuthStateChanged(this, null);
         }
+    }
+
+    private void OnDestroy()
+    {
+        FO.auth.StateChanged -= AuthStateChanged;
     }
 
     // Sign in Player
@@ -46,6 +52,29 @@ public  class AuthManager: MonoBehaviour
             // `credential` can be used instead of calling GetCredential().
             PlayerPrefs.SetString(UserPrefType.PLAYER_ID, typedPhoneNumber.ToString());
             FO.credential = credential;
+            FO.auth
+                .SignInWithCredentialAsync(FO.credential)
+                .ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCanceled)
+                    {
+                        Debug.Log("Proses pendaftaran dibatalkan.");
+                        AuthUIManager.instance.SetMessage("Proses pendaftaran dibatalkan");
+                        return;
+                    }
+                    if (task.IsFaulted)
+                    {
+                        Debug.Log("Proses pendaftaran belum berhasil. " + task.Exception);
+                        AuthUIManager.instance.SetMessage("Proses pendaftaran belum berhasil. " + task.Exception);
+                    }
+                    if (task.IsCompleted)
+                    {
+                        Debug.Log("Pendaftaran berhasil.");
+                        AuthUIManager.instance.SetMessage("Pendaftaran berhasil.");
+                        FO.user = task.Result;
+                        ProceedToGame();
+                    }
+                });
             AuthUIManager.instance.SetMessage("Verifikasi berhasil. ");
             ProceedToGame();
         },
@@ -88,21 +117,23 @@ public  class AuthManager: MonoBehaviour
         
         FO.credential = FO.phoneAuthProvider.GetCredential(verId, responseCode);
 
-        FO.auth.SignInWithCredentialAsync(FO.credential).ContinueWith(task =>
-        {
-            AuthUIManager.instance.SetMessage("Mencoba verifikasi....");
-            if (task.IsFaulted)
+        FO.auth
+            .SignInWithCredentialAsync(FO.credential)
+            .ContinueWithOnMainThread(task =>
             {
-                Debug.Log("Sign in with credential async encountered an error: " + task.Exception);
-                AuthUIManager.instance.SetMessage("Sign in with credential async encountered an error: " + task.Exception);
-                SceneManager.LoadScene("auth");
-                return;
-            }
-            FO.user = task.Result;
-            Debug.Log("User signed in successfully.");
-            AuthUIManager.instance.SetMessage("Welcome user " + FO.user.PhoneNumber);
-            ProceedToGame();
-        });
+                AuthUIManager.instance.SetMessage("Mencoba verifikasi....");
+                if (task.IsFaulted)
+                {
+                    Debug.Log("Sign in with credential async encountered an error: " + task.Exception);
+                    AuthUIManager.instance.SetMessage("Sign in with credential async encountered an error: " + task.Exception);
+                    SceneManager.LoadScene("auth");
+                    return;
+                }
+                FO.user = task.Result;
+                Debug.Log("User signed in successfully.");
+                AuthUIManager.instance.SetMessage("Welcome user " + FO.user.PhoneNumber);
+                ProceedToGame();
+            });
     }
 
     public void ResendVerificationCode()
@@ -112,5 +143,31 @@ public  class AuthManager: MonoBehaviour
     
     private void ProceedToGame() {
         SceneManager.LoadScene("mainmenu");
+    }
+
+    public void AuthStateChanged(object sender, System.EventArgs eventArgs)
+    {
+        if (FO.auth.CurrentUser != FO.user)
+        {
+            FO.isSignedIn = FO.user != FO.auth.CurrentUser && FO.auth.CurrentUser != null;
+
+            if (!FO.isSignedIn && FO.user != null)
+            {
+                Debug.Log("Signed out " + FO.user.UserId);
+                // if signed out tell user to login or sign-in
+                // AuthUIManager.instance.authContainer.SetActive(true);
+                // AuthUIManager.instance.DisplayPanel(AuthPanelType.SignUp, true);
+                // GoToScene("auth");
+                // SceneManager.LoadScene("auth");
+            }
+
+            FO.user = FO.auth.CurrentUser;
+
+            if (FO.isSignedIn)
+            {
+                // GoToScene("mainmenu");
+                SceneManager.LoadScene("mainmenu");
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 9110496245221741277}
   m_Layer: 0
   m_Name: ARZonePlace
-  m_TagString: Untagged
+  m_TagString: ARIcon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
