@@ -139,7 +139,7 @@ public class MainMenuManager : MonoBehaviour
 
     // Buttons function
     public void ScanButton() {
-        SceneManager.LoadScene("scanviewer");
+        SceneManager.LoadScene("scanviewerwithtimeline");
     }
 
     public void GalleryButton() {
