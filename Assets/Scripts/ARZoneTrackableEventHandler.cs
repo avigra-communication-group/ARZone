@@ -13,11 +13,21 @@ public enum AnimationType {
     DirectorAnimation
 }
 
+[System.Serializable]
+public class TargetOffset {
+    public Vector3 offsetPosition;
+    public Vector3 offsetRotation;
+    public Vector3 offsetScale;
+}
+
 public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
 {
     public AnimationType animationType;
     [Header("Object yang dapat dipindahkan ke kamera.")]
     public GameObject target;
+    [Header("Offset untuk object picker, khusus konten selain video")]
+    public TargetOffset targetOffset;
+
     private Transform targetParent;
     private Vector3 originalPosition;
     private Quaternion originalRotation;
@@ -165,13 +175,14 @@ public class ARZoneTrackableEventHandler : DefaultTrackableEventHandler
     }
 
     public GameObject SendObjectToCam()
-    {
+    {   
         if(!target.activeInHierarchy)
         {
             return null;
         }
         objectIsPicked = true;
         ARCameraTargetPicker.animationType = animationType;
+        ARCameraTargetPicker.Offset = targetOffset;
         return target;
     }
 

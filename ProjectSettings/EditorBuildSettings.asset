@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/mainmenu.unity
     guid: b2b5ded1af6af4caaa3b84e841f3161a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/scanviewer.unity
     guid: a081b0eeb529e4e089ede0cd4e5ce6bb
   - enabled: 1

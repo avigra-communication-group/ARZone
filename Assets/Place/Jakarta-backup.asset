@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a966107bfbe147ddafeda4d40508b2f, type: 3}
+  m_Name: Jakarta-backup
+  m_EditorClassIdentifier: 
+  namaDaerah: Jakarta
+  placeList:
+  - namaTempat: Pejaten Village
+    lat: -6.280446
+    lon: 106.828823
+    kategori: 0
+    pointFromPlace: 50
+    objectModelID: 0
+  - namaTempat: Halte Busway Jati Padang
+    lat: -6.285605
+    lon: 106.826264
+    kategori: 1
+    pointFromPlace: 100
+    objectModelID: 1
+  - namaTempat: Wisma Mulia 2
+    lat: -6.234358
+    lon: 106.821991
+    kategori: 0
+    pointFromPlace: 100
+    objectModelID: 0
+  - namaTempat: Castle Production
+    lat: -6.162526
+    lon: 106.837748
+    kategori: 0
+    pointFromPlace: 100
+    objectModelID: 0

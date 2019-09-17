@@ -18,7 +18,8 @@ public class ARCameraTargetPicker : MonoBehaviour
     public Sprite picked;
     public Sprite notPicked;
 
-    public static AnimationType animationType;
+    
+
     private GameObject activeGameObject;
     
     public GameObject ActiveGameObject
@@ -38,10 +39,13 @@ public class ARCameraTargetPicker : MonoBehaviour
                     activeGameObject.transform.localPosition = new Vector3(0,0,-4f);
                     activeGameObject.transform.localRotation = Quaternion.Euler(new Vector3(90,0,0));
                     break;
+                case AnimationType.ModelAnimation:
+                    activeGameObject.transform.localPosition = Offset.offsetPosition;
+                    activeGameObject.transform.localRotation = Quaternion.Euler(Offset.offsetRotation);
+                    activeGameObject.transform.localScale = Offset.offsetScale;
+                    break;
                 default:
-                    activeGameObject.transform.localPosition = Vector3.zero;
-                    activeGameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
-                break;
+                    break;
             }     
         }
     }
@@ -51,6 +55,8 @@ public class ARCameraTargetPicker : MonoBehaviour
     public Button pickObjectButton;
     [HideInInspector]
     public static bool togglePick = false;
+    public static AnimationType animationType;
+    public static TargetOffset Offset;
     private Vector3 lastTargetTransform;
     private Transform lastTargetTransformParent;
 
