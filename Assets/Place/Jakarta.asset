@@ -32,9 +32,21 @@ MonoBehaviour:
     kategori: 0
     pointFromPlace: 100
     objectModelID: 0
-  - namaTempat: Castle Production
-    lat: -6.162526
-    lon: 106.837748
+  - namaTempat: Dinas Pariwisata dan Kebudayaan Jakarta
+    lat: -6.235266
+    lon: 106.822541
+    kategori: 0
+    pointFromPlace: 100
+    objectModelID: 0
+  - namaTempat: JPO Senayan
+    lat: -6.224244
+    lon: 106.806367
+    kategori: 0
+    pointFromPlace: 100
+    objectModelID: 0
+  - namaTempat: CMC
+    lat: -6.164492
+    lon: 106.911438
     kategori: 0
     pointFromPlace: 100
     objectModelID: 0

@@ -36,7 +36,7 @@ public class ARCameraTargetPicker : MonoBehaviour
                     activeGameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
                     break;
                 case AnimationType.VideoAnimation:
-                    activeGameObject.transform.localPosition = new Vector3(0,0,-4f);
+                    activeGameObject.transform.localPosition = new Vector3(0,0,-3f);
                     activeGameObject.transform.localRotation = Quaternion.Euler(new Vector3(90,0,0));
                     break;
                 case AnimationType.ModelAnimation:
