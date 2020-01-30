@@ -257,7 +257,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 5
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: D:/ARZONE/castleks.keystore
+  AndroidKeystoreName: /Users/argadipawibawa/Projects/keystore/castleks.keystore
   AndroidKeyaliasName: castle
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0

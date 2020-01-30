@@ -143,15 +143,25 @@ public class MainMenuManager : MonoBehaviour
     }
 
     public void GalleryButton() {
-        mainMenuButtonsContainer.SetActive(false);
-        settingContainer.SetActive(false);
-        aboutContainer.SetActive(false);
-        exchangeContainer.SetActive(false);
-        galleryContainer.SetActive(true);
+        // mainMenuButtonsContainer.SetActive(false);
+        // settingContainer.SetActive(false);
+        // aboutContainer.SetActive(false);
+        // exchangeContainer.SetActive(false);
+        // galleryContainer.SetActive(true);
+        ModalPanelManager.instance.Choice(
+            "",
+            "Silahkan Buka Folder AR Zone Anda",
+            false,
+            "",
+            "",
+            null,
+            null,
+            false
+        );
     }
 
     public void ARMapButton() {
-        #if UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_ANDROID && !UNITY_EDITOR
         if(!Input.location.isEnabledByUser)
         {
             ModalPanelManager.instance.Choice(
@@ -168,7 +178,7 @@ public class MainMenuManager : MonoBehaviour
             );
             return;
         }
-        #endif
+#endif
         SceneManager.LoadScene("armap");
     }
 

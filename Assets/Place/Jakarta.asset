@@ -50,3 +50,9 @@ MonoBehaviour:
     kategori: 0
     pointFromPlace: 100
     objectModelID: 0
+  - namaTempat: Dinas Pariwisata DKI Jakarta
+    lat: -6.164492
+    lon: 106.82255
+    kategori: 0
+    pointFromPlace: 100
+    objectModelID: 0
